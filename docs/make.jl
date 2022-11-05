@@ -38,5 +38,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/junhyukjeon/Cropbox.jl.git"
+    repo = "github.com/junhyukjeon/Cropbox.jl.git",
+    devbranch = "documentation",
 )
