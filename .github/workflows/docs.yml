@@ -2,7 +2,9 @@ name: docs
 on:
   push:
     branches:
-      - main
+      - documentation
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 jobs:
   deploy:
     runs-on: ubuntu-latest
