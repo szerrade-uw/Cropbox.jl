@@ -1,92 +1,91 @@
+```@setup Cropbox
+using Cropbox
+```
+
 !!! warning "Warning"
     This page is incomplete. Please check the Reference page for information regarding functions.
 
 # Simulation
 
-There are four different simulative functions in Cropbox that we can run with a model.
-
-```@contents
-Pages = ["simulation.md"]
-```
+There are four different functions in Cropbox for model simulation. For information regarding syntax, please check the [reference](@ref Simulation1).
+* [`instance()`](@ref instance)
+* [`simulate()`](@ref simulate)
+* [`evaluate()`](@ref evaluate)
+* [`calibrate()`](@ref calibrate)
 
 !!! tip "Tip"
-    When running any simulative function, do not forget to include `Controller` as one of the mixins for the system that you which to simulate.
+    When running any of these functions, do not forget to include `Controller` as a mixin for the system.
 
-## `instance()`
+## [`instance()`](@id instance)
 
+The `instance()` function is the core of all simulative functions. To run any kind of simulation of a system, the system must first be instantiated. The `instance()` function simply makes an instance of a system with an initial condition specified by a configuration and additional options.
+
+**Example**
+```@example Cropbox
+@system S(Controller) begin
+    a ~ advance
+end
+
+s = instance(S)
 ```
-instance(S; <keyword arguments>) -> S
+
+After creating an instance of a system, we can simulate the system manually, using the `update!()` function (don't forget to assign a name to the instance).
+
+```@example Cropbox
+update!(s)
+```
+```@example Cropbox
+update!(s)
 ```
 
-The instance function makes an instance of a system `S` with an initial condition specified by configuration and additional options.
-
-### Keyword Arguments
-
-`config=()`
-
-`options=()`
-
-`seed=nothing`
-
-## `simulate()`
+## [`simulate()`](@id simulate)
 
 `simulate()` runs a simulation by creating an instance of a specified system and updating it a specified number of times in order to generate an output in the form of a DataFrame.
 
+**Example**
+```@example Cropbox
+@system S(Controller) begin
+    a => 1 ~ preserve(parameter)
+    b(a) => 2a ~ track
+end
+
+d = simulate(S; stop=5)
 ```
-simulate([f,] S[, layout, [configs]]; <keyword arguments>) -> DataFrame
-```
 
-### Arguments
+!!! tip "Tip"
+    When using the `simulate()` function, it is recommended to always include an argument for the `stop` keyword unless you only want to see the initial calculations.
 
-`S::Type{<:System}`
+Don't forget that we can insert `Config` objects to 
 
-`layout::Vector`
+## [`evaluate()`](@id evaluate)
 
-`configs::Vector`
-
-### Keyword Arguments
-
-#### Layout
-
-`base=nothing`
-
-`index=nothing`
-
-`target=nothing`
-
-`meta=nothing`
-
-#### Configuration
-
-`config=()`
-
-`configs=[]`
-
-`seed=nothing`
-
-#### Progress
-
-`stop=nothing`
-
-`snap=nothing`
-
-`snatch=nothing`
-
-`verbose=true
-
-#### Format
-
-`nounit=false`
-
-`long=false`
-
-## `evaluate()`
+The `evaluate()` function has two different [methods](https://docs.julialang.org/en/v1/manual/methods/) for comparing datasets.
 
 ```
 evaluate(S, obs; <keyword arguments>) -> Number | Tuple
 ```
 
-## `calibrate()`
+This method compares the output of simulation results for the given system `S` and observation data `obs` with a choice of evaluation metric.
+
+**Example**
+```@example Cropbox
+@system S begin
+end
+```
+
+```
+evaluate(obs, est; <keyword arguments>) -> Number | Tuple
+```
+
+This method compares observation data `obs` and estimation data `est` with a choice of evaluation metric. This method compares two DataFrames, meaning that if you have an DataFrame output of a previous simulation, you do not need run another simulation.
+
+**Example**
+```@example Cropbox
+@system S begin
+end
+```
+
+## [`calibrate()`](@id calibrate)
 
 ```
 calibrate(S, obs; <keyword arguments>) -> Config | OrderedDict

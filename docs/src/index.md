@@ -7,9 +7,10 @@ Cropbox is a declarative modeling framework specifically designed for developing
 ## Getting started
 
 * Read the [Installation](@ref) section.
-* Read the [Guide](@ref) to understand the structure of models within Cropbox.
-* Read the [Tutorials](@ref) for building your own model with Cropbox.
-* Check out the [Gallery](@ref) to see what others have done with the Cropbox framework.
+* Take a look at the 
+* Read the [Guide](@ref System) to understand the structure of models within Cropbox.
+* Read the [Tutorials](@ref GDD) for building your own model with Cropbox.
+* Check out the [Gallery](@ref Gallery) to see what others have done with the Cropbox framework.
 
 ## Documentation Outline
 
