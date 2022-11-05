@@ -14,26 +14,40 @@ There are three main functions in Cropbox used for visualization. For informatio
 
 ## [`plot()`](@id plot)
 
-The `plot()` function is divided into two main uses.
-
-The following three [methods](https://docs.julialang.org/en/v1/manual/methods/) are used to plot a graph from a provided data source, with the graph type based on arguments. All three methods have the same output.
-
-```
-plot(df::DataFrame, x, y; <keyword arguments>) -> Plot
-plot(X::Vector, Y::Vector; <keyword arguments>) -> Plot
-plot(df::DataFrame, x, y, z; <keyword arguments>) -> Plot
-```
+The `plot()` function is used to plot two-dimensional graphs.
 
 **Example**
+
+Let's start by making a simple plot by using two vectors of discrete values.
+
 ```@example Cropbox
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 6, 8, 10]
+
+plot(x, y)
 ```
 
-The following two [methods](https://docs.julialang.org/en/v1/manual/methods/) are used to plot a graph of horizontal/vertical lines depending on `kind`, which can be one of two arguments: `:hline` or `:vline`. An initial plotting of `hline` requires `xlim` and `vline` requires `ylim`, respectively.
+You can also plot multiple series, by using a vector of vectors.
+
+```@example Cropbox
+plot(x, [x, y])
+```
+
+We will very often be dealing with DataFrames, which we can also use to plot graphs.
+
+Let's make a simple DataFrame and use its columns to make another plot.
+
+```@example Cropbox
 
 ```
-plot(v::Number; kind, <keyword arguments>) -> Plot
-plot(V::Vector; kind, <keyword arguments>) -> Plot
+
+### `plot!()`
+
 ```
+plot!(p, <arguments>; <keyword arguments>) -> Plot
+```
+
+`plot!()` is an exntension of the `plot()` function used to update an existing `Plot` object `p` by appending a new graph made with `plot()`
 
 **Example**
 ```@example Cropbox
