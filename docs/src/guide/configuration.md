@@ -135,5 +135,3 @@ config = @config(
 )
 ```
 
-## Setting the Initial Date in `Calendar`
-
