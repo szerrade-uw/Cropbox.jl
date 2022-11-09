@@ -2,9 +2,6 @@
 using Cropbox
 ```
 
-!!! warning "Warning"
-    This page is incomplete. Please check the Reference page for information regarding functions.
-
 # Visualization
 
 There are three main functions in Cropbox used for visualization. For information regarding syntax, please check the [reference](@ref Visualization1).
@@ -16,7 +13,7 @@ There are three main functions in Cropbox used for visualization. For informatio
 
 The `plot()` function is used to plot two-dimensional graphs.
 
-**Example**
+**Two Vectors**
 
 Let's start by making a simple plot by using two vectors of discrete values.
 
@@ -27,66 +24,73 @@ y = [2, 4, 6, 8, 10]
 plot(x, y)
 ```
 
+**Multiple Vectors**
+
 You can also plot multiple series, by using a vector of vectors.
 
 ```@example Cropbox
 plot(x, [x, y])
 ```
 
-We will very often be dealing with DataFrames, which we can also use to plot graphs.
+**DataFrame**
 
-Let's make a simple DataFrame and use its columns to make another plot.
+We can also make a plot using a DataFrame and its columns. Recall that the `simulate()` function provides a DataFrame.
 
 ```@example Cropbox
+@system S(Controller) begin
+    x ~ advance
+    y1(x) => 2x ~ track
+    y2(x) => x^2 ~ track
+end
 
+df = simulate(S; stop=10)
+
+p = plot(df, :x, [:y1, :y2])
 ```
 
 ### `plot!()`
 
-```
-plot!(p, <arguments>; <keyword arguments>) -> Plot
-```
-
-`plot!()` is an exntension of the `plot()` function used to update an existing `Plot` object `p` by appending a new graph made with `plot()`
+`plot!()` is an extension of the `plot()` function used to update an existing `Plot` object `p` by appending a new graph made with `plot()`
 
 **Example**
 ```@example Cropbox
-```
+@system S(Controller) begin
+    x ~ advance
+    y3(x) => 3x ~ track
+end
 
-### `plot!()`
+df = simulate(S; stop=10)
 
-```
-plot!(p, <arguments>; <keyword arguments>) -> Plot
-```
-
-`plot!()` is an exntension of the `plot()` function used to update an existing `Plot` object `p` by appending a new graph made with `plot()`
-
-**Example**
-```@example Cropbox
+plot!(p, df, :x, :y3)
 ```
 
 ## [`visualize()`](@id visualize)
 
-```
-visualize(<arguments>; <keyword arguments>) -> Plot
-```
-
 The `visualize()` function is used to make a plot from an output collected by running simulations. It is essentially identical to running the `plot()` function with a DataFrame from the `simulate()` function, and can be seen as a convenient function to run both `plot()` and `simulate()` together.
 
 **Example**
-```example Cropbox
+```@example Cropbox
+@system S(Controller) begin
+    x ~ advance
+    y1(x) => 2x ~ track
+    y2(x) => x^2 ~ track
+end
+
+v = visualize(S, :x, [:y1, :y2]; stop=10, kind=:line)
 ```
 
 ### `visualize!()`
 
-```
-visualize!(p, <arguments>; <keyword arguments>) -> Plot
-```
-
-`visualize!()` updates an existing `Plot` object `p` by appending a new graph generated with `visualize()`
+`visualize!()` updates an existing `Plot` object `p` by appending a new graph generated with `visualize()`. 
 
 **Example**
-```example Cropbox
+```@example Cropbox
+@system S(Controller) begin
+    x ~ advance
+    y3(x) => 3x ~ track
+end
+
+visualize!(v, S, :x, :y3; stop=10, kind=:line)
 ```
 
 ## [`manipulate()`](@id manipulate)
@@ -98,15 +102,7 @@ manipulate(f::Function; parameters, config=())
 ```
 Create an interactive plot updated by callback f. Only works in Jupyter Notebook.
 
-
 ```
 manipulate(args...; parameters, kwargs...)
 ```
 Create an interactive plot by calling manipulate with visualize as a callback.
-
-
-**Example**
-```example Cropbox
-@system S begin
-end
-```

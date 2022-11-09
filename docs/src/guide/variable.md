@@ -299,6 +299,8 @@ end
 instance(S)
 ```
 
+A matrix can also be used instead of a vector of pairs.
+
 ```@example Cropbox
 @system S(Controller) begin
     m => [1 10; 2 20; 3 30] ~ interpolate
