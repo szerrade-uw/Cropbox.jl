@@ -2,15 +2,15 @@
 using Cropbox
 ```
 
-```@example Cropbox
-pwd()
-```
-
 # System
 
 In Cropbox, a system is a unit of model component that contains a collection of variables. The framework guarantees that the most current state of a variable is accessible by another variable that depends on said variable, provided that they are within the same system. To ensure a correct propagation of variable states, the system must have a linear order of computation that satisfies all the requirements for dependency imposed by variable declarations. Any inconsistency caused by a cyclic dependency between variables stops code generation and results in an error. This is intentional, as we want to avoid such logical errors from going through unnoticed. 
 
 Once a system is defined, its structure is fixed and variables cannot be added or removed. The variables themselves, however, can still be updated throughout time steps. Variables declared in another system can be also accessed if the entire system holding dependent variables has already been updated. This is done by declaring an external system as a member of another system.
+
+```@example Cropbox
+pwd()
+```
 
 ## Creating a System
 
