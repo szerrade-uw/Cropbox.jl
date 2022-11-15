@@ -8,6 +8,10 @@ In Cropbox, a system is a unit of model component that contains a collection of 
 
 Once a system is defined, its structure is fixed and variables cannot be added or removed. The variables themselves, however, can still be updated throughout time steps. Variables declared in another system can be also accessed if the entire system holding dependent variables has already been updated. This is done by declaring an external system as a member of another system.
 
+```@example
+pwd()
+```
+
 ## Creating a System
 
 A system in Cropbox is created through the Cropbox-specific macro, `@system`.
@@ -131,7 +135,7 @@ The `Config` object referred to by the `config` variable is overridden by a keyw
 
 ## Calendar
 
-`Calendar` is a system similar to the `Clock` system that is embedded in `Context`. `Calendar` provides `time` and `step` variables, but in the type of ZonedDateTime from [TimeZones.jl](https://github.com/JuliaTime/TimeZones.jl). Much like `Clock`, `Calendar` is a pre-built Cropbox system, but `Calendar` is not included by default as a variable reference like `context` for the system `Context`.
+`Calendar` is a system similar to the `Clock` system. `Calendar` provides `time` and `step` variables, but in the type of ZonedDateTime from [TimeZones.jl](https://github.com/JuliaTime/TimeZones.jl). Much like `Clock`, `Calendar` is a pre-built Cropbox system, but `Calendar` is not included by default as a variable reference like `context` for the system `Context`. Also, unlike `Clock`, `Calendar` is not embedded in `Context`.
 
 This is what the `Calendar` system looks like:
 
