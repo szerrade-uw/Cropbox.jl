@@ -8,10 +8,6 @@ In Cropbox, a system is a unit of model component that contains a collection of 
 
 Once a system is defined, its structure is fixed and variables cannot be added or removed. The variables themselves, however, can still be updated throughout time steps. Variables declared in another system can be also accessed if the entire system holding dependent variables has already been updated. This is done by declaring an external system as a member of another system.
 
-```@example Cropbox
-pwd()
-```
-
 ## Creating a System
 
 A system in Cropbox is created through the Cropbox-specific macro, `@system`.
@@ -48,7 +44,7 @@ A `mixin` is a system that is included as a part another system. While each syst
 
 **Example**
 
-Here is an example where the system `S3` is declared with systems `S1` and `S2` as mixins. You can ignore `Controller` for now.
+Here is an example where the system `S3` is declared with systems `S1` and `S2` as mixins.
 
 ```@example Cropbox
 @system S1 begin
@@ -107,9 +103,7 @@ timeunit(::Type{<:Clock}) = u"hr"
 end
 ```
 
-`time` is an `advance` variable which is essentially an `accumulate` variable tailored for keeping time of simulation. By default, `time` starts at hour 0 and increases by 1-hour intervals. `tick` is another time variable that is responsible for keeping track of the number of updates performed. As a result, `context.clock.time` and `context.clock.tick` are often used as the index for the x-axis of plots and visualizations. 
-
-The `step` variable is a `preserve` variable that determines the time-step intervals of a simulation. As we can see, `step` also happens to be a `parameter`, which means that it can be altered through a configuration.
+`time` is an `advance` variable which is essentially an `accumulate` variable tailored for keeping time of simulation. By default, `time` starts at hour 0 and increases by 1-hour intervals. `tick` is another time variable that is responsible for keeping track of the number of updates performed. As a result, `context.clock.time` and `context.clock.tick` are often used as the index for the x-axis of plots and visualizations. The `step` variable is determines the time-step intervals of simulation. 
 
 ### Config
 

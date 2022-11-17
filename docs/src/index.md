@@ -25,4 +25,4 @@ Cropbox is a declarative modeling framework specifically designed for developing
 
 ## Citation
 
-When using Cropbox in your work, please consider citing the following...
+When using Cropbox in your work, please consider citing it.

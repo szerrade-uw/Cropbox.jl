@@ -80,7 +80,13 @@ end
 
 #### Multiple Configurations
 
-When multiple sets of configurations are needed, as in the `configs` argument for `simulate()`, a vector of `Config` objects is used. The `@config` macro supports some convenient ways to construct a vector of configurations. 
+When multiple sets of configurations are needed, as in the `configs` argument for `simulate()`, a vector of `Config` objects is used. 
+
+```@example Cropbox
+c = @config[:S => :a => 1, :S => :a => 2]
+```
+
+The `@config` macro also supports some convenient ways to construct a vector of configurations. 
 
 The prefix operator `!` allows `expansion` of any iterable placed in the configuration value. For example, `!(:S => :a => 1:2)` is expanded into two sets of separate configurations [:S => :a => 1, :S => :a => 2].
 
@@ -92,6 +98,17 @@ The infix operator `*` allows multiplication of a vector of configurations with 
 
 ```@example Cropbox
 @config (:S => :a => 1:2) * (:S => :b => 0)
+```
+
+#### Combining Configurations
+
+When you have multiple `Config` objects that you want to combine without making one from scratch, you can do that also using the `@config` macro. If there are variables with identical names, note that the value from the latter configuration will take precedence.
+
+```@example Cropbox
+c1 = :S => (:a => 1, :b => 1)
+c2 = :S => (:b => 2)
+
+c3 = @config(c1, c2)
 ```
 
 ## Changing the Time Step
@@ -134,4 +151,3 @@ config = @config(
     :S => :D => DataFrame(index=(0:3)u"hr", value=0:10:30)
 )
 ```
-

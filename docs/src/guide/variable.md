@@ -3,7 +3,7 @@ using Cropbox
 using DataFrames
 ```
 
-# [Variables](@id variable)
+# [Variable](@id variable)
 
 In Cropbox, a variable is defined as a unit element of modeling that denotes a value determined by a specific operation relying on other variables. Each variable represents a field within the system struct defined by the `@system` macro.
 
