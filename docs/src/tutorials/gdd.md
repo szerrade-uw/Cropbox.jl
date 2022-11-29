@@ -151,7 +151,7 @@ The next important step is to create a configuration object to assign or replace
 
 As covered in the [Configuration](@ref Configuration1) section, we can make a single `Config` object with all the configurations we need for all the systems. We can also just as easily make multiple configuration objects and combine them, but the outcome is the same.
 
-Given the nature of GDD, our model is meant to be run on a daily interval. Therefore, one of the first things that we need to configure is the `step` variable in the `Clock` system from 1u"hr" to 1u"d". This will change the time interval of the simulation from hourly to daily.
+Given the nature of GDD, our model is meant to be run on a daily interval. One of the first things that we need to configure is the `step` variable in the `Clock` system from `1u"hr"` to `1u"d"`. This will change the time interval of the simulation from hourly to daily.
 
 ```
 c = @config :Clock => :step => 1u"d"
@@ -210,3 +210,13 @@ c = @config(
 )
 ```
 
+**Simulation**
+
+Now that we have fully defined `GrowingDegreeDay` and created a configuration for it, we can finally simulate the model.
+
+```@example Cropbox
+```
+
+**Visualization**
+
+Let's visualize the simulation using the `visualize()` function. Note that we can input the system to visualize a new simulation or input a DataFrame from a previous simulation.

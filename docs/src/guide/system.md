@@ -40,7 +40,7 @@ In this system, we declared four [variables](@ref variable).
 
 ## Mixin
 
-A `mixin` is a system that is included as a part another system. While each system implements its own set of variables, these variables can be linked with variables from other systems through the use of mixins.
+A `mixin` is a system that is included as a part another system. While each system implements its own set of variables, these variables can be linked with variables from other systems through the use of mixins. [Controller](@ref Controller) is a mixin required to instantiate a system.
 
 **Example**
 
@@ -111,7 +111,7 @@ Unlike the `Clock` system, the `Config` referred to by the `config` variable in 
 
 ## Controller
 
-An instance of context and configuration provided to an instance of a new system is usually sourced by a parent system that holds a variable referring to that system. However, because there is no parent system for the instantiation of the first system, context and configuration need to be supplied elsewhere. `Controller` is pre-built system of Cropbox made to handle such issues by creating an instance of Context by itself.
+An instance of context and configuration provided to an instance of a new system is usually sourced by a parent system that holds a variable referring to that system. However, because there is no parent system for the instantiation of the first system, context and configuration need to be supplied elsewhere. `Controller` is a pre-built system of Cropbox made to handle such issues by creating an instance of Context by itself.
 
 This is what the `Controller` system looks like:
 
@@ -122,10 +122,10 @@ This is what the `Controller` system looks like:
 end
 ```
 
-The `Config` object referred to by the `config` variable is overridden by a keyword argument `(config)` of the system constructor `instance()` and functions such as `simulate()` and `visualize()`. Therefore at least one (and usually only one) system is designated to possess `Controller` as one of its mixins. In order to run an instance or a simulation of a system, `Controller` *must* be included as a mixin. Unlike the system `Context`, Controller is not a built-in mixin and must be explicitly declared as a mixin when declaring a system.
+The `Config` object referred to by the `config` variable is overridden by a keyword argument `(config)` of the system constructor `instance()` and functions such as `simulate()` and `visualize()`. Therefore at least one (and usually only one) system is designated to possess `Controller` as one of its mixins. In order to run an instance or a simulation of a system, `Controller` *must* be included as a mixin. Unlike the system `Context`, Controller must be explicitly declared as a mixin when declaring a system.
 
 !!! tip "Tip"
-    When you create a system that you want to instantiate, make sure to have `Controller` as a mixin. You can also make a system instantiable by making a new system with `Controller` and the original system as mixins.
+    When you create a system that you want to instantiate, make sure to have `Controller` as a mixin. You can also make a system instantiable by making a new system with the original system and `Controller` as mixins.
 
 ## Calendar
 
