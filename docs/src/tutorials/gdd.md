@@ -157,7 +157,7 @@ Given the nature of GDD, our model is meant to be run on a daily interval. One o
 c = @config :Clock => :step => 1u"d"
 ```
 
-Next we will add the configurations for `GrowingDegreeDay`. The only parameters we have to configure are `Tb and `To`.
+Next we will add the configurations for `GrowingDegreeDay`. The only parameters we have to configure are `Tb` and `To`.
 
 ```
 c = @config (
