@@ -85,14 +85,16 @@ Now let's address the issue of the missing temperature values. We will make a ne
 For this tutorial, we will be using the following CSV file containing weather data from Beltsville, Maryland in 2002.
 
 ```@example Cropbox
-pwd()
+weather = CSV.read("weather.csv", DataFrame) |> unitfy
+
+first(weather, 3)
 ```
 \
 
 The `|> unitfy` notation in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified). For reference, this is what the DataFrame looks like without the command.
 
 ```@example Cropbox
-first(CSV.read(download("https://raw.githubusercontent.com/junhyukjeon/Cropbox.jl/documentation/docs/src/tutorials/weather.csv"), DataFrame), 3)
+first(CSV.read("weather.csv", DataFrame), 3)
 ```
 \
 
