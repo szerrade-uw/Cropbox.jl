@@ -85,7 +85,7 @@ Now let's address the issue of the missing temperature values. We will make a ne
 For this tutorial, we will be using the following CSV file containing weather data from Beltsville, Maryland in 2002.
 
 ```@example Cropbox
-weather = CSV.read(download("https://raw.githubusercontent.com/junhyukjeon/PotatoModel.jl/master/test/WAGE71.csv"), DataFrame) |> unitfy
+weather = CSV.read(joinpath(dirname(dirname(pathof(Cropbox))), "test", "examples", "data", "simplecrop", "weather.csv"), DataFrame) |> unitfy
 
 first(weather, 3)
 ```
