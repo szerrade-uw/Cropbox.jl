@@ -85,7 +85,7 @@ Now let's address the issue of the missing temperature values. We will make a ne
 For this tutorial, we will be using the following CSV file containing weather data from Beltsville, Maryland in 2002.
 
 ```@example Cropbox
-weather = CSV.read(download("https://raw.githubusercontent.com/junhyukjeon/Cropbox.jl/documentation/docs/src/tutorials/weather.csv"), DataFrame) |> unitfy
+weather = CSV.read(download("https://raw.githubusercontent.com/junhyukjeon/PotatoModel.jl/master/test/WAGE71.csv"), DataFrame) |> unitfy
 
 first(weather, 3)
 ```
@@ -121,7 +121,7 @@ Note that we do not have to assign a DataFrame to the variable at declaration. W
 
 Now we can finally declare the temperature variable using one of the columns of the DataFrame represented by `data`. Because this variable is *driven* from a source, we will be declaring a `drive` variable named `T`. The `from` tag specifies the DataFrame source and the `by` tag specifies which column to take the values from.
 
-```
+```@example Cropbox
 @system Temperature begin
     calendar(context) ~ ::Calendar
     data ~ provide(parameter, index=:date, init=calendar.date)
