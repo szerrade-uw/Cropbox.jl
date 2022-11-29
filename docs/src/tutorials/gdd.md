@@ -207,6 +207,7 @@ c = @config(
     :Calendar => (
         :init => ZonedDateTime(2002, 5, 15, tz"America/New_York"),
         :last => ZonedDateTime(2002, 9, 30, tz"America/New_York")
+    )
 )
 ```
 
