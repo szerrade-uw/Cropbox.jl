@@ -238,10 +238,10 @@ end
 s = instance(S)
 ```
 ```@example Cropbox
-s.a'."index"
+s.a'[!, :index]
 ```
 ```@example Cropbox
-s.a'."value"
+s.a'.[!, :value]
 ```
 \
 
@@ -1061,7 +1061,7 @@ instance(S)
 
 ### [`when`](@id when)
 
-Specifies when a variable should carry out its function. It is supplied with a `flag` variable, and the specified variable is evaluated when the `flag` variable is `true`.
+Specifies when a variable should be evaluated. It is supplied with a `flag` variable, and the specified variable is evaluated when the `flag` variable is `true`.
 
 Used by: [`track`](@ref track), [`flag`](@ref flag), [`remember`](@ref remember), [`accumulate`](@ref accumulate), [`capture`](@ref capture), [`produce`](@ref produce)
 
