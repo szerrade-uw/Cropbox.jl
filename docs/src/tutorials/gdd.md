@@ -4,6 +4,11 @@ using CSV
 using DataFrames
 using Dates
 using TimeZones
+
+df = DataFrame(A=1:4, B=["M", "F", "F", "M"])
+```
+```@example Cropbox
+df
 ```
 
 # [Growing Degree-Day](@id GDD)
