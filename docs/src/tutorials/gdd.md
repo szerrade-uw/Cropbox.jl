@@ -1,4 +1,7 @@
 ```@setup Cropbox
+import Pkg
+Pkg.add("DataFrames")
+
 using Cropbox
 using CSV
 using DataFrames
@@ -39,7 +42,16 @@ In this tutorial, we will create a model that simulates GDD and cGDD. Let's star
 @system GrowingDegreeDay
 ```
 
-From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two variables named *Topt* and *Tb*, representing fixed parameter values. Given their nature, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation. Also, because they are parameters that we may potentially want to change the values of, we will give them the `parameter` tag, which allows the tagged variables to be altered through a configuration when the system is instantiated. Note that we will not assign values at declaration because we will configure them when we run the simulation. Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculation.
+From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two variables named *Topt* and *Tb*, representing fixed parameter values. Since they are fixed, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
+
+```
+@system GrowingDegreeDay begin
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
+end
+```
+
+Because parameters that we may potentially want to change the values of, we will give them the `parameter` tag, which allows the tagged variables to be altered through a configuration when the system is instantiated. Note that we will not assign values at declaration because we will configure them when we run the simulation. Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculation.
 
 ```
 @system GrowingDegreeDay begin
