@@ -203,7 +203,6 @@ Next we will assign the aforementioned DataFrame to the `data` in `Temperature`
 
 ```
 c = @config(
-    )
     :Clock => (
         :step => 1u"d"
     ),
@@ -221,7 +220,6 @@ Lastly, we will configure the `init` and `last` parameters of the `Calendar` sys
 
 ```@example Cropbox
 c = @config(
-    )
     :Clock => (
         :step => 1u"d"
     ),
