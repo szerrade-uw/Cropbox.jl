@@ -5,7 +5,7 @@ makedocs(
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
         canonical = "https://junhyukjeon.github.io/Cropbox.jl/stable/",
-        assets = ["assets/favicon.ico"],
+        assets = ["assets/favicon.ico"]
     ),
     sitename = "Cropbox.jl",
     pages = [
@@ -23,7 +23,7 @@ makedocs(
         ],
         "Tutorials" => [
             "Growing Degree-Day" => "tutorials/gdd.md",
-            "Lotka-Volterra" => "tutorials/lotkavolterra.md",
+            "Lotka-Volterra" => "tutorials/lotkavolterra.md"
         ],
         "Gallery" => "gallery.md",
         "Reference" => [
@@ -34,7 +34,7 @@ makedocs(
             "Inspection" => "reference/inspection.md",
         ],
         "Frequently Asked Questions" => "faq.md",
-    ],
+    ]
 )
 
 deploydocs(
