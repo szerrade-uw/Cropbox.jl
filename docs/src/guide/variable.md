@@ -235,13 +235,7 @@ Supported tags: [`index`](@ref index), [`init`](@ref init), [`step`](@ref step),
     a => DataFrame("index (hr)" => 0:3, "value (m)" => 0:10:30) ~ provide
 end
 
-s = instance(S)
-```
-```@example Cropbox
-s.a'[!, :index]
-```
-```@example Cropbox
-s.a'.[!, :value]
+instance(S)
 ```
 \
 
