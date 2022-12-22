@@ -1,7 +1,4 @@
 ```@setup Cropbox
-import Pkg
-Pkg.add("DataFrames")
-
 using Cropbox
 using CSV
 using DataFrames
@@ -20,9 +17,6 @@ weather = DataFrame(
     "GDD (K)" => [6.9, 10.0, 13.3, 4.5, 1.6, 2.1, 0.8, 3.6, 6.7, 12.1, 12.3, 12.2, 13.6, 13.4, 13.8, 13.7, 17.8, 17.9, 15.1, 12.2, 14.8, 17.8, 15.5, 10.4, 9.5, 12.9, 16.9, 18.9, 17.9, 12.7, 10.4, 11.9, 11.8, 12.4, 12.7, 12.8, 13.7, 13.7, 14.4, 15.8, 18.1, 19.8, 19.8, 18.8, 15.5, 16.1, 16.0, 17.8, 19.9, 21.2, 21.9, 20.2, 15.1, 12.8, 15.5, 20.1, 16.9, 12.9, 12.5, 14.0, 12.8, 16.2, 18.7, 17.8, 19.1, 19.0, 18.0, 17.5, 19.7, 20.4, 15.4, 14.9, 12.0, 15.5, 20.1, 21.0, 19.9, 20.0, 19.9, 20.8, 17.9, 19.1, 19.1, 15.6, 12.0, 12.3, 13.4, 14.5, 17.0, 18.8, 19.9, 20.6, 20.7, 20.0, 20.2, 21.3, 20.2, 19.5, 17.4, 18.7, 19.1, 18.0, 17.4, 14.2, 15.9, 11.2, 9.7, 10.4, 11.9, 9.5, 11.3, 14.4, 16.9, 14.2, 12.3, 11.6, 11.8, 13.0, 15.8, 14.5, 9.5, 10.4, 13.3, 15.2, 15.4, 12.9, 12.5, 13.2, 14.8, 16.2, 15.7, 11.3, 8.3, 9.8, 9.5, 13.1, 12.2, 8.4, 9.9],
     "cGDD (K)" => [6.9, 10.0, 13.3, 4.5, 1.6, 2.1, 0.8, 3.6, 6.7, 12.1, 12.3, 12.2, 13.6, 13.4, 13.8, 13.7, 17.8, 17.9, 15.1, 12.2, 14.8, 17.8, 15.5, 10.4, 9.5, 12.9, 16.9, 18.9, 17.9, 12.7, 10.4, 11.9, 11.8, 12.4, 12.7, 12.8, 13.7, 13.7, 14.4, 15.8, 18.1, 19.8, 19.8, 18.8, 15.5, 16.1, 16.0, 17.8, 19.9, 21.2, 21.9, 20.2, 15.1, 12.8, 15.5, 20.1, 16.9, 12.9, 12.5, 14.0, 12.8, 16.2, 18.7, 17.8, 19.1, 19.0, 18.0, 17.5, 19.7, 20.4, 15.4, 14.9, 12.0, 15.5, 20.1, 21.0, 19.9, 20.0, 19.9, 20.8, 17.9, 19.1, 19.1, 15.6, 12.0, 12.3, 13.4, 14.5, 17.0, 18.8, 19.9, 20.6, 20.7, 20.0, 20.2, 21.3, 20.2, 19.5, 17.4, 18.7, 19.1, 18.0, 17.4, 14.2, 15.9, 11.2, 9.7, 10.4, 11.9, 9.5, 11.3, 14.4, 16.9, 14.2, 12.3, 11.6, 11.8, 13.0, 15.8, 14.5, 9.5, 10.4, 13.3, 15.2, 15.4, 12.9, 12.5, 13.2, 14.8, 16.2, 15.7, 11.3, 8.3, 9.8, 9.5, 13.1, 12.2, 8.4, 9.9]
 )
-```
-```@example Cropbox
-weather = weather |> unitfy
 ```
 
 # [Growing Degree-Day](@id GDD)
@@ -110,11 +104,9 @@ Now let's address the issue of the missing temperature values. We will make a ne
 @system Temperature
 ```
 
-For this tutorial, we will be using the following CSV file containing weather data from Beltsville, Maryland in 2002.
+For this tutorial, we will be using the following DataFrame containing weather data from Beltsville, Maryland in 2002.
 
 ```@example Cropbox
-weather = CSV.read("weather.csv", DataFrame) |> unitfy
-
 first(weather, 3)
 ```
 \
@@ -122,7 +114,8 @@ first(weather, 3)
 The `|> unitfy` notation in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified). For reference, this is what the DataFrame looks like without the command.
 
 ```@example Cropbox
-first(CSV.read("weather.csv", DataFrame), 3)
+weather = weather |> unitfy
+first(weather, 3)
 ```
 \
 

@@ -1,8 +1,4 @@
-using Cropbox
-using DataFrames
-using Dates
 using Documenter
-using TimeZones
 
 makedocs(
     format = Documenter.HTML(
