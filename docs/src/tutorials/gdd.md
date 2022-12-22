@@ -193,8 +193,8 @@ c = @config (
         :step => 1u"d"
     ),
     :GrowingDegreeDay => (
-        :Tb => 8.0,
-        :To => 32.0
+        :Tb => 8.0u"°C",
+        :To => 32.0u"°C"
     )
 )
 ```
@@ -206,9 +206,9 @@ c = @config(
     :Clock => (
         :step => 1u"d"
     ),
-    :GDD => (
-        :Tb => 8.0,
-        :To => 32.0
+    :GrowingDegreeDay => (
+        :Tb => 8.0u"°C",
+        :To => 32.0u"°C"
     ),
     :Temperature => (
         :data => weather
@@ -223,13 +223,13 @@ c = @config(
     :Clock => (
         :step => 1u"d"
     ),
-    :GDD => (
-        :Tb => 8.0,
-        :To => 32.0
+    :GrowingDegreeDay  => (
+        :Tb => 8.0u"°C",
+        :To => 32.0u"°C"
     ),
     :Temperature => (
         :data => weather
-    )
+    ),
     :Calendar => (
         :init => ZonedDateTime(2002, 5, 15, tz"America/New_York"),
         :last => ZonedDateTime(2002, 9, 30, tz"America/New_York")
