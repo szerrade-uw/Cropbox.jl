@@ -1,3 +1,4 @@
+using Cropbox
 using Documenter
 
 makedocs(

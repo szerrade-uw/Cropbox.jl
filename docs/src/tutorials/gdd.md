@@ -40,12 +40,21 @@ From the equation, let's identify the variables we need to declare in our system
 
 ```
 @system GrowingDegreeDay begin
+    Tb ~ preserve
+    To ~ preserve
+end
+```
+
+ `Tb` and `To` are parameters that we may want to change the values of depending on the simulation. To make this possible, we will assign them the `parameter` tag, which allows the tagged variables to be altered through a configuration before a simulation. 
+ 
+ ```
+@system GrowingDegreeDay begin
     Tb ~ preserve(parameter, u"°C")
     To ~ preserve(parameter, u"°C")
 end
 ```
 
-Because parameters that we may potentially want to change the values of, we will give them the `parameter` tag, which allows the tagged variables to be altered through a configuration when the system is instantiated. Note that we will not assign values at declaration because we will configure them when we run the simulation. Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculation.
+ Note that we will not assign values at declaration because we will configure them when we run the simulation. Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculation.
 
 ```
 @system GrowingDegreeDay begin
@@ -54,13 +63,13 @@ Because parameters that we may potentially want to change the values of, we will
 end
 ```
 
-In the equation, *T* represents the average daily temperature value necessary to calculate the GDD. Likewise, the variable in our system will represent a series of daily average temperatures. The series of temperature values will be driven from an external data source, and because this represents a task unrelated to calculating the GDD, we will create a separate system later on for data extraction. For the `GrowingDegreeDay` system, we will declare `T` as a `hold` variable, which represents a placeholder that will be replaced by a `T` from another system. 
+In the equation, *T* represents the average daily temperature value necessary to calculate the GDD. Likewise, the variable in our system will represent a series of daily average temperatures. The series of temperature values will be driven from an external data source, and because this represents a separate task, we will create a separate system later on for data extraction. For the `GrowingDegreeDay` system, we will declare `T` as a `hold` variable, which represents a placeholder that will be replaced by a `T` from another system. 
 
 ```
 @system GrowingDegreeDay begin
-    T : temperature ~ hold
-    Tb: base_temperature ~ preserve(parameter, u"°C")
-    To: optimal_temperature ~ preserve(parameter, u"°C")
+    T ~ hold
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
 end
 ```
 
@@ -68,11 +77,11 @@ We declared all the necessary variables required to calculate GDD. Now it is tim
 
 ```
 @system GrowingDegreeDay begin
-    T : temperature ~ hold
-    Tb: base_temperature ~ preserve(parameter, u"°C")
-    To: optimal_temperature ~ preserve(parameter, u"°C")
+    T ~ hold
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
 
-    GDD(T, Tb, To): growing_degree => begin
+    GDD(T, Tb, To) => begin
         min(T, To) - Tb
     end ~ track(min = 0, u"K")
 end
@@ -84,15 +93,15 @@ Now that `GDD` is declared in the system, we will declare cGDD as an `accumulate
 
 ```
 @system GrowingDegreeDay begin
-    T : temperature ~ hold
-    Tb: base_temperature ~ preserve(parameter, u"°C")
-    To: optimal_temperature ~ preserve(parameter, u"°C")
+    T ~ hold
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
 
-    GDD(T, Tb, To): growing_degree_day => begin
+    GDD(T, Tb, To) => begin
         min(T, To) - Tb
     end ~ track(min = 0, u"K")
 
-    cGDD(GDD): cumulative_growing_degree_day ~ accumulate(u"K*d")
+    cGDD(GDD) ~ accumulate(u"K*d")
 end
 ```
 
@@ -127,7 +136,9 @@ In the `Temperature` system, there is one variable that we will declare before d
 end
 ```
 
-`calendar` is a variable reference to the [`Calendar`](@ref Calendar) system (one of the built-in systems of Cropbox), which has a number of time-related variables in date format. Declaring `calendar` as a variable of type `Calendar` allows us to use the variables inside the `Calendar` system as variables for our current system. Recall that `context` is a reference to the `Context` system and is included in every Cropbox system by default. Inside the `Context` system there is the `config` variable which references a `Config` object. By having `context` as a depending variable for `calendar`, we can change the values of the variables in `calendar` with a configuration. In essence, the purpose of `calendar` is to have access to useful variables inside the `Calendar` system such as `init`, `last`, and `date`.
+`calendar` is a variable reference to the [`Calendar`](@ref Calendar) system (one of the built-in systems of Cropbox), which has a number of time-related variables in date format. Declaring `calendar` as a variable of type `Calendar` allows us to use the variables inside the `Calendar` system as variables for our current system. Recall that `context` is a reference to the `Context` system and is included in every Cropbox system by default. Inside the `Context` system there is the `config` variable which references a `Config` object. By having `context` as a depending variable for `calendar`, we can change the values of the variables in `calendar` with a configuration. 
+
+In essence, the purpose of `calendar` is to have access to useful variables inside the `Calendar` system such as `init`, `last`, and `date`.
 
 The next variable we will add is a variable storing the weather data as a DataFrame. This variable will be a `provide` variable named `data`.
 
