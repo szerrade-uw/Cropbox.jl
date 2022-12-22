@@ -1,4 +1,3 @@
-push!(LOAD_PATH,"../src/")
 using Cropbox
 using DataFrames
 using Dates
@@ -37,11 +36,11 @@ makedocs(
             "Visualization" => "reference/visualization.md",
             "Inspection" => "reference/inspection.md",
         ],
-        "Frequently Asked Questions" => "faq.md",
+        "Frequently Asked Questions" => "faq.md"
     ]
 )
 
 deploydocs(
     repo = "github.com/junhyukjeon/Cropbox.jl.git",
-    devbranch = "documentation",
+    devbranch = "documentation"
 )
