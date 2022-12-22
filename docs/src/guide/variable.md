@@ -1,7 +1,4 @@
 ```@setup Cropbox
-import Pkg
-Pkg.add("DataFrames")
-
 using Cropbox
 using DataFrames
 ```
