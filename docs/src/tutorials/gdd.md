@@ -30,13 +30,14 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 \end{align}
 ```
 
-In this tutorial, we will create a model that simulates GDD and cGDD. Let's start by making a system called `GrowingDegreeDay`.
+In this tutorial, we will create a model that simulates GDD and cGDD.
 
+Let us start by making a system called `GrowingDegreeDay`.
 ```
 @system GrowingDegreeDay
 ```
 
-From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two variables named *Topt* and *Tb*, representing fixed parameter values. Since they are fixed, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
+From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
 
 ```
 @system GrowingDegreeDay begin
@@ -45,7 +46,16 @@ From the equation, let's identify the variables we need to declare in our system
 end
 ```
 
- `Tb` and `To` are parameters that we may want to change the values of depending on the simulation. To make this possible, we will assign them the `parameter` tag, which allows the tagged variables to be altered through a configuration before a simulation. 
+ `Tb` and `To` are parameters that we may want to change depending on the simulation. To make this possible, we will assign them the `parameter` tag, which allows the tagged variables to be altered through a configuration for each simulation. Note that we will not assign values at declaration because we will configure them when we run the simulation.
+
+  ```
+@system GrowingDegreeDay begin
+    Tb ~ preserve(parameter)
+    To ~ preserve(parameter)
+end
+```
+ 
+ Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculations.
  
  ```
 @system GrowingDegreeDay begin
@@ -54,16 +64,7 @@ end
 end
 ```
 
- Note that we will not assign values at declaration because we will configure them when we run the simulation. Lastly, we will tag the variables with units. Tagging units is the recommended practice for many reasons, one of which is to catch mismatching units during calculation.
-
-```
-@system GrowingDegreeDay begin
-    Tb: base_temperature ~ preserve(parameter, u"°C")
-    To: optimal_temperature ~ preserve(parameter, u"°C")
-end
-```
-
-In the equation, *T* represents the average daily temperature value necessary to calculate the GDD. Likewise, the variable in our system will represent a series of daily average temperatures. The series of temperature values will be driven from an external data source, and because this represents a separate task, we will create a separate system later on for data extraction. For the `GrowingDegreeDay` system, we will declare `T` as a `hold` variable, which represents a placeholder that will be replaced by a `T` from another system. 
+In the GDD equation, *T* represents the average daily temperature value necessary to calculate the GDD. Likewise, the variable in our system will represent a series of daily average temperatures. The series of temperature values will be driven from an external data source, for which we will create a separate system later on for data extraction. For the `GrowingDegreeDay` system, we will declare `T` as a `hold` variable, which represents a placeholder that will be replaced by a `T` from another system. 
 
 ```
 @system GrowingDegreeDay begin
@@ -113,14 +114,14 @@ Now let's address the issue of the missing temperature values. We will make a ne
 @system Temperature
 ```
 
-For this tutorial, we will be using the following DataFrame containing weather data from Beltsville, Maryland in 2002.
+For this tutorial, we will be using the following DataFrame, containing weather data from Beltsville, Maryland in 2002.
 
 ```@example Cropbox
 first(weather, 3)
 ```
 \
 
-The `|> unitfy` notation in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified). For reference, this is what the DataFrame looks like without the command.
+Notice that the column names have units in parentheses. The `|> unitfy` notation in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified).
 
 ```@example Cropbox
 weather = weather |> unitfy
@@ -136,9 +137,10 @@ In the `Temperature` system, there is one variable that we will declare before d
 end
 ```
 
-`calendar` is a variable reference to the [`Calendar`](@ref Calendar) system (one of the built-in systems of Cropbox), which has a number of time-related variables in date format. Declaring `calendar` as a variable of type `Calendar` allows us to use the variables inside the `Calendar` system as variables for our current system. Recall that `context` is a reference to the `Context` system and is included in every Cropbox system by default. Inside the `Context` system there is the `config` variable which references a `Config` object. By having `context` as a depending variable for `calendar`, we can change the values of the variables in `calendar` with a configuration. 
+The purpose of `calendar` is to have access to variables inside the `Calendar` system such as `init`, `last`, and `date`, which represent initial, last, and current date, respectively.
 
-In essence, the purpose of `calendar` is to have access to useful variables inside the `Calendar` system such as `init`, `last`, and `date`.
+!!! note "Note"
+    `calendar` is a variable reference to the [`Calendar`](@ref Calendar) system (one of the built-in systems of Cropbox), which has a number of time-related variables in date format. Declaring `calendar` as a variable of type `Calendar` allows us to use the variables inside the `Calendar` system as variables for our current system. Recall that `context` is a reference to the `Context` system and is included in every Cropbox system by default. Inside the `Context` system there is the `config` variable which references a `Config` object. By having `context` as a depending variable for `calendar`, we can change the values of the variables in `calendar` with a configuration. 
 
 The next variable we will add is a variable storing the weather data as a DataFrame. This variable will be a `provide` variable named `data`.
 
@@ -149,7 +151,7 @@ The next variable we will add is a variable storing the weather data as a DataFr
 end
 ```
 
-Note that we do not have to assign a DataFrame to the variable at declaration. We have tagged the variable with a `parameter` tag so that we can assign a DataFrame during the configuration. We will set the index of the extracted DataFrame as the "date" column of the data source. The `init` tag is used to specify the starting row of the data that we want to take. `calendar.date` refers to the `date` variable in the `Calendar` system, and is a `track` variable that keeps track of the dates of simulation. The initial value of `date` is dependent on `calendar.init` which we will assign during configuration. By setting `init` to `calendar.date`, we are making sure that `provide` variable extracts data from the correct starting row corresponding to the desired initial date of simulation.
+ Note that we have tagged the variable with a `parameter` tag so that we can assign a DataFrame during the configuration. We will set the index of the extracted DataFrame as the "date" column of the data source. The `init` tag is used to specify the starting row of the data that we want to store. `calendar.date` refers to the `date` variable in the `Calendar` system, and is a `track` variable that keeps track of the dates of simulation. The initial value of `date` is dependent on `calendar.init` which we will assign during configuration. By setting `init` to `calendar.date`, we are making sure that the `provide` variable extracts data from the correct starting row corresponding to the desired initial date of simulation.
 
 Now we can finally declare the temperature variable using one of the columns of the DataFrame represented by `data`. Because this variable is *driven* from a source, we will be declaring a `drive` variable named `T`. The `from` tag specifies the DataFrame source and the `by` tag specifies which column to take the values from.
 
@@ -160,30 +162,32 @@ Now we can finally declare the temperature variable using one of the columns of 
     T ~ drive(from=data, by=:Tavg, u"°C")
 end
 ```
+\
 
-We finally have all the components to define our model. Because `GrowingDegreeDay` requires values for `T` from `Temperature`, let's redefine `GrowingDegreeDay` with `Temperature` as a mixin. Because we want to run a simulation of `GrowingDegreeDay`, we also want to include `Controller` as a mixin. Recall that `Controller` must be included as a mixin for a system that you want to instantiate.
+We finally have all the components to define our model. Because `GrowingDegreeDay` requires values for `T` from `Temperature`, let's redeclare `GrowingDegreeDay` with `Temperature` as a mixin. Because we want to run a simulation of `GrowingDegreeDay`, we also want to include `Controller` as a mixin. Recall that `Controller` must be included as a mixin for any system that you want to simulate.
 
 ```@example Cropbox
-@system GrowingDegreeDay(Temperature, Calendar) begin
-    T : temperature ~ hold
-    Tb: base_temperature ~ preserve(parameter, u"°C")
-    To: optimal_temperature ~ preserve(parameter, u"°C")
+@system GrowingDegreeDay(Temperature, Controller) begin
+    T ~ hold
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
 
-    GDD(T, Tb, To): growing_degree_day => begin
+    GDD(T, Tb, To) => begin
         min(T, To) - Tb
     end ~ track(min = 0, u"K")
 
-    cGDD(GDD): cumulative_growing_degree_day ~ accumulate(u"K*d")
+    cGDD(GDD) ~ accumulate(u"K*d")
 end
 ```
+\
 
 **Configuration**
 
-The next important step is to create a configuration object to assign or replace the values of parameters that we need for simulating our model.
+The next step is to create a configuration object to assign the values of parameters. Recall that `data`, `T`, `Tb`, and `To` are empty variables at the moment.
 
-As covered in the [Configuration](@ref Configuration1) section, we can make a single `Config` object with all the configurations we need for all the systems. We can also just as easily make multiple configuration objects and combine them, but the outcome is the same.
+As covered in the [Configuration](@ref Configuration1) section, we can make a single `Config` object with all the configurations we need for our systems.
 
-Given the nature of GDD, our model is meant to be run on a daily interval. One of the first things that we need to configure is the `step` variable in the `Clock` system from `1u"hr"` to `1u"d"`. This will change the time interval of the simulation from hourly to daily.
+Given the nature of GDD, this model is a daily model. To run a daily simulation, we need to configure the `step` variable in the `Clock` system from `1u"hr"` to `1u"d"`. This will change the time interval of the simulation from hourly (default) to daily.
 
 ```
 c = @config :Clock => :step => 1u"d"
@@ -203,7 +207,7 @@ c = @config (
 )
 ```
 
-Next we will assign the aforementioned DataFrame to the `data` in `Temperature`
+Next we will pair the aforementioned DataFrame `weather` to `data` in `Temperature`
 
 ```
 c = @config(
@@ -220,7 +224,7 @@ c = @config(
 )
 ```
 
-Lastly, we will configure the `init` and `last` parameters of the `Calendar` system.
+Lastly, we will configure the `init` and `last` parameters of the `Calendar` system, which will define the time range of our simulation.
 
 ```@example Cropbox
 c = @config(
@@ -246,8 +250,33 @@ c = @config(
 Now that we have fully defined `GrowingDegreeDay` and created a configuration for it, we can finally simulate the model.
 
 ```@example Cropbox
+s = simulate(GrowingDegreeDay;
+    config = c,
+    stop = "calendar.stop",
+    index = "calendar.date",
+    target = [:GDD, :cGDD]
+)
+
+first(s, 10)
 ```
+\
 
 **Visualization**
 
-Let's visualize the simulation using the `visualize()` function. Note that we can input the system to visualize a new simulation or input a DataFrame from a previous simulation.
+To end the tutorial, let's visualize the simulation using the `plot()` and `visualize()` functions.
+
+We can input the DataFrame from our simulation in the `plot()` function to create a plot.
+
+Here is a plot of `GDD` over time.
+
+```@example Cropbox
+plot(s, "calendar.date", :GDD; kind=:line)
+```
+
+We can also simultaneously run a new simulation and plot its result using the `visualize()` function.
+
+Here is a plot of `cGDD` over time.
+
+```@example Cropbox
+visualize(GrowingDegreeDay, "calendar.date", :cGDD; config=c, stop="calendar.stop", kind=:line)
+```
