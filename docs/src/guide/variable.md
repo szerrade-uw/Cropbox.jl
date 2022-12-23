@@ -232,10 +232,10 @@ Supported tags: [`index`](@ref index), [`init`](@ref init), [`step`](@ref step),
 **Example**
 ```@example Cropbox
 @system S(Controller) begin
-    a => DataFrame("index (hr)" => 0:3, "value (m)" => 0:10:30) ~ provide
+    a => DataFrame("index (hr)" => 0:2, "value (m)" => 0:10:20) ~ provide
 end
 
-instance(S)
+instance(S).a
 ```
 \
 
@@ -404,7 +404,13 @@ Supported tags: None
 
 **Example**
 ```@example Cropbox
-@system S(Controller)
+@system S(Controller) begin
+    a          => 1       ~ preserve 
+    b(a)       => a == a' ~ flag
+    c(wrap(a)) => a == a' ~ flag
+end
+
+instance(S)
 ```
 \
 
@@ -460,17 +466,15 @@ Used by: [`provide`](@ref provide)
 **Example**
 ```@example Cropbox
 @system S(Controller) begin
-    a => DataFrame("index" => (0:3)u"hr", "value (m)" => 0:10:30) ~ provide
-    b => DataFrame("index" => (0:3)u"hr", "value (m)" => 0:10:30) ~ provide(autounit=false)
+    a => DataFrame("index" => (0:2)u"hr", "value (m)" => 0:10:20) ~ provide
+    b => DataFrame("index" => (0:2)u"hr", "value (m)" => 0:10:20) ~ provide(autounit=false)
 end
-
-s = instance(S)
 ```
 ```@example Cropbox
-s.a'."value"
+instance(S).a
 ```
 ```@example Cropbox
-s.b'."value (m)"
+instance(S).b
 ```
 \
 
@@ -510,7 +514,7 @@ Used by: [`tabulate`](@ref tabulate)
     ] ~ tabulate(rows=(:A, :B, :C, :D), columns=(:a, :b))
 end
 
-instance(S)
+instance(S).T
 ```
 \
 
@@ -531,7 +535,7 @@ instance(S)
 ```
 \
 
-### [`extern`](@id extern)
+### [``](@id )
 
 Used by: [`preserve`](@ref preserve), [`track`](@ref track), [`flag`](@ref flag)
 
