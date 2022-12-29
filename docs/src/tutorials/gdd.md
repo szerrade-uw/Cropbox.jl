@@ -121,10 +121,10 @@ first(weather, 3)
 ```
 \
 
-Notice that the column names have units in parentheses. The `|> unitfy` notation in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified).
+Notice that the column names have units in parentheses. The `unitfy()` function in Cropbox automatically assigns units to values based on names of the columns (if the unit is specified).
 
 ```@example Cropbox
-weather = weather |> unitfy
+weather = unitfy(weather)
 first(weather, 3)
 ```
 \
