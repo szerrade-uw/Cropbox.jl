@@ -5,9 +5,9 @@ using DataFrames
 using Dates
 using TimeZones
 ```
-# Lotka-Volterra
+# Lotka-Volterra Equations
 
-In this tutorial, we will create a model that simulates population dynamics between prey and predator using the Lotka-Volterra equations. The Lotka-Volterra equations are as follows.
+In this tutorial, we will create a model that simulates population dynamics between prey and predator using the Lotka-Volterra equations. The Lotka-Volterra equations are as follows:
 
 ```math
 \begin{align}
@@ -15,8 +15,9 @@ In this tutorial, we will create a model that simulates population dynamics betw
 \frac{dP}{dt} &= caNP - mP \\
 \end{align}
 ```
+\
 
-Here is a list of variables used in the system.
+Here is a list of variables used in the system:
 
 | Symbol | Value | Units | Description |
 | :---: | :---: | :---: | :--- |
@@ -27,27 +28,28 @@ Here is a list of variables used in the system.
 | a | - | $\mathrm{yr^{-1}}$ | Attack rate or predation rate |
 | c | - | - | Conversion efficiency of an eaten prey into new predator; predator's reproduction efficiency per prey consumed) |
 | m | - | $\mathrm{yr^{-1}}$ | Mortality rate of predator population |
+\
 
-Let's begin by creating a system called LotkaVolterra
-
-```
-@system LotkaVolterra
-```
-
-Let us first start by declaring a time variable with a yearly unit so that we can use it as the x axis of out plot later on. Recall that context.clock.time simply keeps track of the progression of time.
+Let us begin by creating a [system](@ref System) called `LotkaVolterra`. Since this is a system that we want to simulate later on, we must include [`Controller`](@ref Controller) as a [mixin](@ref Mixin).
 
 ```
-@system LotkaVolterra begin
+@system LotkaVolterra(Controller)
+```
+\
+
+We will first declare a time variable with a yearly unit, which we will use for plotting the model simulations later on. Recall that `context.clock.time` is a variable that keeps track of the progression of time in hourly units. We are simply declaring a variable to keep track of the time in years.
+
+```
+@system LotkaVolterra(Controller) begin
     t(context.clock.time) ~ track(u"yr")
 end
 ```
+\
 
-While declaring `t` is not necessary to simulate the model, having a time variable in year-units will be convenient for plotting purposes later on.
-
-Now we will declare the parameters in the equation as `preserve` variables.
+Next, we will declare the parameters in the equations as `preserve` variables. `preserve` variables are variables that remain constant throughout a simulation.
 
 ```
-@system LotkaVolterra begin
+@system LotkaVolterra(Controller) begin
     t(context.clock.time) ~ track(u"yr")
 
     b: prey_birth_rate            ~ preserve(parameter, u"yr^-1")
@@ -56,8 +58,9 @@ Now we will declare the parameters in the equation as `preserve` variables.
     m: predator_mortality_rate    ~ preserve(parameter, u"yr^-1")
 end
 ```
+\
 
-Now that we have the depending variables for the two equations, let us declare variables describing the prey and predator populations at any time t. The two equations above describe a rate of change for the two populations. Because we want to track the actual number of the two populations, we will declare the two populations as `accumulate` variables, which will give us the euler integration of the two population rates. Note that a variable can be used as its own depending variable.
+Now let us declare the prey and predator populations as variables. The Lotka-Volterra equations describe rates of change for the two populations. As we want to track the actual number of the two populations, we will declare the two populations as `accumulate` variables, which are simply Euler integrations of the two population rates. Note that a variable can be used as its own depending variable.
 
 ```
 @system LotkaVolterra begin
@@ -72,8 +75,9 @@ Now that we have the depending variables for the two equations, let us declare v
     P(N, P, c, a, m): predator_population => c*a*N*P -   m*P ~ accumulate
 end
 ```
+\
 
-By default, `accumulate` variables begin at a value of 0. In our model, that would mean that the two populations will stay at 0 for eternity. To address this, we have to define initial values representing the starting number of population for the prey and predator.
+By default, `accumulate` variables initialize at a value of zero. In our current model, that would result in two populations remaining at zero indefinitely. To address this, we will define the initial values for the two `accumulate` variables using the `init` tag. We can specify a particular value, or we can also create and reference new parameters representing the two initial populations. We will go with the latter option as it allows us to flexibly change the initial populations with a configuration.
 
 ```@example Cropbox
 @system LotkaVolterra(Controller) begin
@@ -91,30 +95,62 @@ By default, `accumulate` variables begin at a value of 0. In our model, that wou
     P(N, P, c, a, m): predator_population => c*a*N*P -   m*P ~ accumulate(init=P0)
 end
 ```
+\
 
 **Configuration**
 
-Now that the model is defined, we have to create a `Config` object to fill or adjust the parameters.
+With the system now defined, we will create a `Config` object to fill or adjust the parameters.
+
+First, we will change the `step` variable in the `Clock` system to `1u"d"`, which will make the system update at a daily interval. Recall that `Clock` is a system that is referenced in all systems by default. You can run the model with any timestep.
 
 ```@example Cropbox
-lvc = @config (
-    :Clock => (;
-        step = 1u"d",
-    ),
+lvc = @config (:Clock => step => 1u"d")
+```
+\
+
+Next, we will configure the parameters in the `LotkaVolterra` system that we defined. Note that we can easily combine confgurations by providing multiple elements.
+
+```@example Cropbox
+lvc = @config (lvc,
     :LotkaVolterra => (;
         b = 0.6,
         a = 0.02,
         c = 0.5,
         m = 0.5,
         N0 = 20,
-        P0 = 30,
-    ),
+        P0 = 30
+    )
 )
 ```
+\
 
-Now let us make a density-dependent version of the original Lotka-Volterra model.
+**Visualization**
 
-For the density dependent version of the model, we will simply make a new system with the original LotkaVolterra model as a mixin. Afterwards, all we have to do is declare the relevant variables in the new system. Because the equation for `N` is different in the LotkaVolterraDD model, we will declare another `N` variable in the new system, but it will override the `N` variable that was in the original `LotkaVolterra` system.
+Let us visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
+
+```@example Cropbox
+visualize(LotkaVolterra, :t, [:N, :P]; config = lvc, stop = 100u"yr", kind = :line)
+```
+
+## Density-Dependent Lotka-Volterra Equations
+
+Now let's try to make a density-dependent version of the original Lotka-Volterra model which incorporates a new term in the prey population rate. The new variable *K* represents the carrying capacity of the prey population.
+
+```math
+\begin{align}
+\frac{dN}{dt} &= bN-\frac{b}{K}N^2-aNP \\
+\frac{dP}{dt} &= caNP-mP \\
+\end{align}
+```
+
+We will call this new system `LotkaVolterraDD`.
+
+```
+@system LotkaVolterraDD(Controller)
+```
+\
+
+Since we already defined the `LotkaVolterra` system, which already has most of the variables we require, we can use `LotkaVolterra` as a mixin for `LotkaVolterraDD`. This makes our task a lot simpler, as all that remains is to declare the variable `K` for carrying capacity and redeclare the variable `N` for prey population. The variable `N` in the new system will automatically overwrite the `N` from `LotkaVolterra`. 
 
 ```@example Cropbox
 @system LotkaVolterraDD(LotkaVolterra, Controller) begin
@@ -125,15 +161,24 @@ For the density dependent version of the model, we will simply make a new system
     K: carrying_capacity ~ preserve(parameter)
 end
 ```
+\
 
 **Configuration**
 
-Just like the new system, we can create a new configuration using adding onto the first configuration.
+Much like the new system, the new configuration can be created by reusing the old configuration. All we need to do is configure the new variable `K`.
 
 ```@example Cropbox
-lvddc = @config(lvc,
-    :LotkaVolterraDD => (;
-        K = 1000,
-    ),
-)
+lvddc = @config(lvc, (:LotkaVolterraDD => K => 1000))
 ```
+\
+
+**Visualization**
+
+Once again, let us visualize the system using the `visualize()` function.
+
+```@example Cropbox
+visualize(LotkaVolterraDD, :t, [:N, :P]; config = lvddc, stop = 100u"yr", kind = :line)
+```
+
+**Calibration**
+
