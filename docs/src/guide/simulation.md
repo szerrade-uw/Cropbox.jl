@@ -29,7 +29,7 @@ end
 s = instance(S)
 ```
 
-After creating an instance of a system, we can simulate the system manually, using the `update!()` function (don't forget to assign a name to the instance).
+After creating an instance of a system, we can simulate the system manually, using the `update!()` function.
 
 ```@example Cropbox
 update!(s)
