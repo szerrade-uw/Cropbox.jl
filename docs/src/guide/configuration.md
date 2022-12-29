@@ -50,7 +50,7 @@ Below is an example of creating the most basic configuration. Note that the syst
 
 #### Multiple Parameters
 
-When specifying multiple parameters in a system, we can pair the system to either a tuple of pairs or named tuples
+When specifying multiple parameters in a system, we can pair the system to either a tuple of pairs or named tuples.
 
 **Tuple of Pairs**
 ```@example Cropbox
@@ -124,7 +124,7 @@ Here we create a simple system with an `advance` variable that simply starts at 
     a ~ advance
 end
 
-simulate(S; stop=3u"hr")
+simulate(S; stop=2u"hr")
 ```
 \
 
@@ -133,7 +133,7 @@ We can configure the `step` variable within the `Clock` system to `1u"d"`, then 
 ```@example Cropbox
 c = @config(:Clock => :step => 1u"d")
 
-simulate(S; config=c, stop=3u"d")
+simulate(S; config=c, stop=2u"d")
 ```
 
 ## Supplying a DataFrame to a `provide` Variable
@@ -144,10 +144,12 @@ Apart from changing numerical parameter values, configurations are also commonly
 
 ```@example Cropbox
 @system S(Controller) begin
-    D ~ provide
+    D ~ provide(parameter)
 end
 
-config = @config(
-    :S => :D => DataFrame(index=(0:3)u"hr", value=0:10:30)
+c = @config(
+    :S => :D => DataFrame(index=(0:2)u"hr", value=0:10:20)
 )
+
+instance(S; config=c)
 ```

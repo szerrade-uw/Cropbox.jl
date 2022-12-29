@@ -535,14 +535,9 @@ instance(S)
 ```
 \
 
-### [``](@id )
+### [`extern`](@id extern)
 
 Used by: [`preserve`](@ref preserve), [`track`](@ref track), [`flag`](@ref flag)
-
-**Example**
-```@example Cropbox
-```
-\
 
 ### [`from`](@id from)
 
@@ -822,11 +817,6 @@ instance(S)
 
 Used by: [`preserve`](@ref preserve), [`track`](@ref track)
 
-**Example**
-```@example Cropbox
-```
-\
-
 ### [`reset`](@id reset)
 
 Resets the sum to 0 at every time step.
@@ -906,11 +896,6 @@ end
 
 Used by: [`produce`](@ref produce)
 
-**Example**
-```@example Cropbox
-```
-\
-
 ### [`skip`](@id skip)
 
 Used by: [`track`](@ref track)
@@ -928,23 +913,37 @@ simulate(S; stop=2)
 
 ### [`step`](@id step)
 
+`advance`: Specifies the increments of the `advance` variable.
+
+`provide`: Specifies the intervals of the index column.
+
 Used by: [`advance`](@ref advance), [`provide`](@ref provide)
 
-**Example**
+**Example:** `advance`
 ```@example Cropbox
+@system S(Controller) begin
+    a ~ advance
+    b ~ advance(step=2)
+    c ~ advance(step=-1)
+end
+
+simulate(S; stop=2)
+```
+\
+
+**Example:** `integrate`
+```@example Cropbox
+@system S(Controller) begin
+    a => DataFrame("index (hr)" => 0:4, "value (m)" => 0:10:40) ~ provide(step=2u"hr")
+end
+
+instance(S).a
 ```
 \
 
 ### [`tick`](@id tick)
 
-`tick`
-
 Used by: [`drive`](@ref drive)
-
-**Example**
-```@example Cropbox
-```
-\
 
 ### [`time`](@id time)
 
