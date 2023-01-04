@@ -37,14 +37,14 @@ Here is a list of variables used in the system:
 | m | - | $\mathrm{yr^{-1}}$ | Mortality rate of predator population |
 \
 
-Let us begin by creating a [system](@ref System) called `LotkaVolterra`. Since this is a system that we want to simulate later on, we must include [`Controller`](@ref Controller) as a [mixin](@ref Mixin).
+Let's begin by creating a [system](@ref System) called `LotkaVolterra`. Since this is a system that we want to simulate later on, we must include [`Controller`](@ref Controller) as a [mixin](@ref Mixin).
 
 ```
 @system LotkaVolterra(Controller)
 ```
 \
 
-We will first declare a time variable with a yearly unit, which we will use for plotting the model simulations later on. Recall that `context.clock.time` is a variable that keeps track of the progression of time in hourly units. We are simply declaring a variable to keep track of the time in years.
+We will first declare a time variable with a yearly unit, which we will use for plotting the model simulations later on. Recall that `context.clock.time` is a variable that keeps track of the progression of time. We are simply declaring a variable to keep track of the time in years.
 
 ```
 @system LotkaVolterra(Controller) begin
@@ -67,7 +67,7 @@ end
 ```
 \
 
-Now let us declare the prey and predator populations as variables. The Lotka-Volterra equations describe the rates of change for the two populations. As we want to track the actual number of the two populations, we will declare the two populations as `accumulate` variables, which are simply Euler integrations of the two population rates. Note that a variable can be used as its own depending variable.
+Now let's declare the prey and predator populations as variables. The Lotka-Volterra equations describe the rates of change for the two populations. As we want to track the actual number of the two populations, we will declare the two populations as `accumulate` variables, which are simply Euler integrations of the two population rates. Note that a variable can be used as its own depending variable.
 
 ```
 @system LotkaVolterra(Controller) begin
@@ -108,14 +108,14 @@ end
 
 With the system now defined, we will create a `Config` object to fill or adjust the parameters.
 
-First, we will change the `step` variable in the `Clock` system to `1u"d"`, which will make the system update at a daily interval. Recall that `Clock` is a system that is referenced in all systems by default. You can run the model with any timestep.
+First, we will change the `step` variable in the `Clock` system to `1u"d"`, which will make the system update at a daily interval. Recall that `Clock` is a system that is referenced in all systems by default. You can technically run the model with any timestep.
 
 ```@example Cropbox
 lvc = @config (:Clock => :step => 1u"d")
 ```
 \
 
-Next, we will configure the parameters in the `LotkaVolterra` system that we defined. Note that we can easily combine confgurations by providing multiple elements.
+Next, we will configure the parameters in the `LotkaVolterra` system that we defined. Note that we can easily combine configurations by providing multiple elements.
 
 ```@example Cropbox
 lvc = @config (lvc,
@@ -133,7 +133,7 @@ lvc = @config (lvc,
 
 **Visualization**
 
-Let us visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
+Let's visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
 
 ```@example Cropbox
 visualize(LotkaVolterra, :t, [:N, :P]; config = lvc, stop = 100u"yr", kind = :line)
@@ -181,11 +181,12 @@ lvddc = @config(lvc, (:LotkaVolterraDD => :K => 1000))
 
 **Visualization**
 
-Once again, let us visualize the system using the `visualize()` function.
+Once again, let's visualize the system using the `visualize()` function.
 
 ```@example Cropbox
 visualize(LotkaVolterraDD, :t, [:N, :P]; config = lvddc, stop = 100u"yr", kind = :line)
 ```
+\
 
 ### Calibration
 
@@ -206,23 +207,21 @@ first(pelts, 3)
 ```
 \
 
-Let us make a plot and see what the data looks like.
+Let's plot the data and see what it looks like.
 
 ```@example Cropbox
 visualize(pelts, :Year, [:Hare, :Lynx], kind = :scatterline)
 ```
+\
 
 For our calibration, we will use a subset of the data covering years 1900 to 1920.
 
-```@setup Cropbox
-pelts_subset = @subset(pelts, 1900u"yr" .<= :Year .<= 1920u"yr")
-```
 ```@example Cropbox
-pelts_subset
+pelts_subset = @subset(pelts, 1900u"yr" .<= :Year .<= 1920u"yr")
 ```
 \
 
-Before we calibrate the parameters for `LotkaVolterra`, let's add one new variable to the system. We will name this variable 'y' for year. The purpose of `y` is to keep track of the year in the same manner as the dataset.
+Before we calibrate the parameters for `LotkaVolterra`, let's add one new variable to the system. We will name this variable `y` for year. The purpose of `y` is to keep track of the year in the same manner as the dataset.
 
 ```@example Cropbox
 @system LotkaVolterra(Controller) begin
@@ -243,7 +242,7 @@ end
 ```
 \
 
-We will now use the `calibrate()` function to find parameters that fit the data. Keep in mind that the range that you decide for each parameter is an important decision to make. We use the `snap` option to explicitly indicate that the output should be recorded by 365-day intervals to avoid excessive rows in the DataFrame causing unnecessary slowdown. Note we use `365u"d"` instead of `1u"yr"` which is technically equivalent to `365.25u"d"` following the convention in astronomy. For information regarding syntax, please check the [reference](@ref Simulation1).
+We will now use the `calibrate()` function to find parameters that fit the data. Keep in mind that the search range for each parameter will be determined by you. We will use the `snap` option to explicitly indicate that the output should be recorded by 365-day intervals to avoid excessive rows in the DataFrame causing unnecessary slowdown. Note that we will use `365u"d"` instead of `1u"yr"` which is technically equivalent to `365.25u"d"` following the convention in astronomy. For information regarding syntax, please check the [reference](@ref Simulation1).
 
 ```@example Cropbox
 lvcc = calibrate(LotkaVolterra, pelts_subset;
@@ -258,13 +257,15 @@ lvcc = calibrate(LotkaVolterra, pelts_subset;
         N0 = (0, 100),
         P0 = (0, 100),
     ),
-    optim=(:MaxSteps => 20000,),
     stop = 20u"yr",
     snap = 365u"d"
 )
 ```
+\
 
-We can make a comparison plot to visualize how well a simulation with the new parameters fit the data.
+As you can see above, the `calibrate()` function will return a `Config` object for the system.
+
+Using the new configuration, let's make a comparison plot to visualize how well the simualation with the new parameters fits the data.
 
 ```@example Cropbox
 p1 = visualize(pelts_subset, :Year, [:Hare, :Lynx]; kind = :scatterline)
@@ -276,8 +277,9 @@ visualize!(p1, LotkaVolterra, :t, [:N, :P];
     names = [],
 )
 ```
+\
 
-Let's try calibrating the density-dependent version of the model. Since we made a slight change to `LotkaVolterra`, let's make sure to define `LotkaVolterraDD` again.
+Now let's try calibrating the density-dependent version of the model. Since we made a slight change to `LotkaVolterra`, let's make sure to define `LotkaVolterraDD` again.
 
 ```@example Cropbox
 @system LotkaVolterraDD(LotkaVolterra, Controller) begin
@@ -286,6 +288,24 @@ Let's try calibrating the density-dependent version of the model. Since we made 
     end ~ accumulate(init = N0)
     
     K: carrying_capacity ~ preserve(parameter)
+end
+```
+```@setup Cropbox
+@system LotkaVolterraDD(Controller) begin
+    t(context.clock.time) ~ track(u"yr")
+    y(t): year            ~ track::Int(u"yr", round)
+
+    b: prey_birth_rate            ~ preserve(parameter, u"yr^-1")
+    a: predation_rate             ~ preserve(parameter, u"yr^-1")
+    c: predator_reproduction_rate ~ preserve(parameter)
+    m: predator_mortality_rate    ~ preserve(parameter, u"yr^-1")
+    K: carrying_capacity          ~ preserve(parameter)
+
+    N0: prey_initial_population     ~ preserve(parameter)
+    P0: predator_initial_population ~ preserve(parameter)
+
+    N(N, P, b, a, K): prey_population     => b*N - b/K*N^2 - a*N*P ~ accumulate(init=N0)
+    P(N, P, c, a, m): predator_population =>       c*a*N*P -   m*P ~ accumulate(init=P0)
 end
 ```
 \
@@ -304,13 +324,13 @@ lvddcc = calibrate(LotkaVolterraDD, pelts_subset;
         m = (0, 2),
         N0 = (0, 100),
         P0 = (0, 100),
-        K = (0, 2000)
+        K = (0, 1000)
     ),
-    optim=(:MaxSteps => 20000,),
     stop = 20u"yr",
     snap = 365u"d"
 )
 ```
+\
 
 Once again, let us make a comparison plot to see how the density-dependent version of the model fares against the original dataset.
 
@@ -324,7 +344,55 @@ visualize!(p2, LotkaVolterraDD, :t, [:N, :P];
     names = [],
 )
 ```
+\
 
 **Evaluation**
 
-We can use the `evaluate()` function in Cropbox to see how each model fares against
+We have visualized how the simulated `LotkaVolterra` and `LotkaVolterraDD` systems compare to the the original dataset. Let us obtain a metric for how well the simulations fit the original dataset using the `evaluate()` function in Cropbox. The `evaluate()` function supports numerous different metrics for evaluation. Here, we will calculate the root-mean-square error (RMSE) and modeling efficiency (EF).
+
+Here are the evaluation metrics for `LotkaVolterra`. The numbers in the tuples correspond to hare and lynx, respectively.
+
+```@example Cropbox
+evaluate(LotkaVolterra, pelts_subset;
+    index = :Year => :y,
+    target = [:Hare => :N, :Lynx => :P],
+    config = (lvcc, :Clock => (:init => 1900u"yr", :step => 1u"d")),
+    stop = 20u"yr",
+    snap = 365u"d",
+    metric = :rmse,
+)
+```
+```@example Cropbox
+evaluate(LotkaVolterra, pelts_subset;
+    index = :Year => :y,
+    target = [:Hare => :N, :Lynx => :P],
+    config = (lvcc, :Clock => (:init => 1900u"yr", :step => 1u"d")),
+    stop = 20u"yr",
+    snap = 365u"d",
+    metric = :ef
+)
+```
+\
+
+Here are the evaluation metrics for `LotkaVolterraDD`:
+
+```@example Cropbox
+evaluate(LotkaVolterraDD, pelts_subset;
+    index = :Year => :y,
+    target = [:Hare => :N, :Lynx => :P],
+    config = (lvddcc, :Clock => (:init => 1900u"yr", :step => 1u"d")),
+    stop = 20u"yr",
+    snap = 365u"d",
+    metric = :rmse
+)
+```
+```@example Cropbox
+evaluate(LotkaVolterraDD, pelts_subset;
+    index = :Year => :y,
+    target = [:Hare => :N, :Lynx => :P],
+    config = (lvddcc, :Clock => (:init => 1900u"yr", :step => 1u"d")),
+    stop = 20u"yr",
+    snap = 365u"d",
+    metric = :ef
+)
+```
