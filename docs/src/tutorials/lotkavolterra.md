@@ -172,7 +172,7 @@ end
 
 **Configuration**
 
-Much like the new system, the new configuration can be created by reusing the old configuration. All we need to do is configure the new variable `K`.
+Much like the new system, the new configuration can be created by reusing the old configuration. All we need to configure is the new variable `K`.
 
 ```@example Cropbox
 lvddc = @config(lvc, (:LotkaVolterraDD => :K => 1000))
@@ -346,7 +346,7 @@ visualize!(p2, LotkaVolterraDD, :t, [:N, :P];
 ```
 \
 
-**Evaluation**
+### Evaluation
 
 We have visualized how the simulated `LotkaVolterra` and `LotkaVolterraDD` systems compare to the the original dataset. Let us obtain a metric for how well the simulations fit the original dataset using the `evaluate()` function in Cropbox. The `evaluate()` function supports numerous different metrics for evaluation. Here, we will calculate the root-mean-square error (RMSE) and modeling efficiency (EF).
 
