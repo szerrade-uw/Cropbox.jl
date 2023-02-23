@@ -19,6 +19,8 @@ weather = DataFrame(
 )
 ```
 
+@contents
+
 # [Growing Degree-Day](@id GDD)
 
 You might have heard the terms like growing degree days (GDD), thermal units, heat units, heat sums, temperature sums, and thermal-time that are used to relate the rate of plant or insect development to temperature. They are all synonymous. The concept of thermal-time or thermal-units derives from the long-standing observation and assumption that timing of development is primarily driven by temperature in plants and the relationship is largely linear. The linear relationship is generally held true over normal growing temperatures that are bracketed by the base temperature (*Tb*) and optimal temperature (*Topt*). Many existing crop models and tree growth models use thermal-unit approaches (e.g., GDD) for modeling phenology with some modifications to account for other factors like photoperiod, vernalization, dormancy, and stress. The growing degree days (GDD) is defined as the difference between the average daily air temperature (*T*) and the base temperature below which the developmental process stops. The bigger the difference in a day, the faster the development takes place up to a certain optimal temperature (*Topt*). The Cumulative GDD (cGDD) since the growth initiation (e.g., sowing, imbibition for germination) is then calculated by:
@@ -32,10 +34,43 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 
 In this tutorial, we will create a model that simulates GDD and cGDD.
 
-Let us start by making a system called `GrowingDegreeDay`.
+## Making a System
+
+In Cropbox, your model will ultimately be defined by a 
+
+For our model, we are going to be creating a block of code that looks like the following:
+
+```
+@system Temperature begin
+    calendar(context) ~ ::Calendar
+    data ~ provide(parameter, index=:date, init=calendar.date)
+    T ~ drive(from=data, by=:Tavg, u"°C")
+end
+
+@system GrowingDegreeDay(Temperature, Controller) begin
+    T ~ hold
+    Tb ~ preserve(parameter, u"°C")
+    To ~ preserve(parameter, u"°C")
+
+    GDD(T, Tb, To) => begin
+        min(T, To) - Tb
+    end ~ track(min = 0, u"K")
+
+    cGDD(GDD) ~ accumulate(u"K*d")
+end
+```
+
+Rest assured, as we will proceed step-by-step.
+
+Let us start by making a system called `GrowingDegreeDay`. This can be done using a simple Cropbox macro `@system`. 
+
 ```
 @system GrowingDegreeDay
 ```
+
+
+
+
 
 From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
 
