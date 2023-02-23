@@ -4,7 +4,6 @@ using Documenter
 makedocs(
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
-        canonical = "https://junhyukjeon.github.io/Cropbox.jl/stable/",
         assets = ["assets/favicon.ico"],
         analytics = "UA-192782823-1",
     ),
