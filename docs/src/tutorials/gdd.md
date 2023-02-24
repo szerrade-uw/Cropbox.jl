@@ -32,6 +32,11 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 
 In this tutorial, we will create a model that simulates GDD and cGDD.
 
+**Table of Contents**
+```@contents
+Pages = ["gdd.md"]
+```
+
 ## Making a System
 
 Let us start by making a system called `GrowingDegreeDay`. This can be done using a simple Cropbox macro `@system`. 
@@ -41,6 +46,8 @@ Let us start by making a system called `GrowingDegreeDay`. This can be done usin
 ```
 
 From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
+
+### Defining Variables
 
 ```
 @system GrowingDegreeDay begin
@@ -109,7 +116,9 @@ Now that `GDD` is declared in the system, we will declare cGDD as an `accumulate
 end
 ```
 
-We have declared all the necessary variables for `GrowingDegreeDay`. 
+We have declared all the necessary variables for `GrowingDegreeDay`.
+
+### Creating Mix-Ins
 
 Now let's address the issue of the missing temperature values. We will make a new system that will provide the missing temperature data we need for simulating `GrowingDegreeDay`. We will call this system `Temperature`. The purpose of `Temperature` will be to obtain a time series of daily average temperature values from an external data source.
 
@@ -184,7 +193,7 @@ end
 ```
 \
 
-**Configuration**
+## Configuring a System
 
 The next step is to create a configuration object to assign the values of parameters. Recall that `data`, `T`, `Tb`, and `To` are empty variables at the moment.
 
@@ -248,7 +257,7 @@ c = @config(
 )
 ```
 
-**Simulation**
+## Simulation a System
 
 Now that we have fully defined `GrowingDegreeDay` and created a configuration for it, we can finally simulate the model.
 
@@ -264,7 +273,7 @@ first(s, 10)
 ```
 \
 
-**Visualization**
+## Visualizing a System
 
 To end the tutorial, let's visualize the simulation using the `plot()` and `visualize()` functions.
 

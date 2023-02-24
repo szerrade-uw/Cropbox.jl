@@ -13,10 +13,6 @@ pelts = DataFrame(
 )
 ```
 
-```@contents
-Pages = ["lotkavolterra.md"]
-```
-
 # Lotka-Volterra Equations
 
 In this tutorial, we will create a model that simulates population dynamics between prey and predator using the Lotka-Volterra equations. The Lotka-Volterra equations are as follows:
@@ -41,6 +37,14 @@ Here is a list of variables used in the system:
 | c | - | - | Conversion efficiency of an eaten prey into new predator; predator's reproduction efficiency per prey consumed) |
 | m | - | $\mathrm{yr^{-1}}$ | Mortality rate of predator population |
 \
+
+**Table of Contents**
+
+```@contents
+Pages = ["lotkavolterra.md"]
+```
+
+## System
 
 Let's begin by creating a [system](@ref System) called `LotkaVolterra`. Since this is a system that we want to simulate later on, we must include [`Controller`](@ref Controller) as a [mixin](@ref Mixin).
 
@@ -109,7 +113,7 @@ end
 ```
 \
 
-## **Configuration**
+## Configuration
 
 With the system now defined, we will create a `Config` object to fill or adjust the parameters.
 
@@ -136,7 +140,7 @@ lvc = @config (lvc,
 ```
 \
 
-## **Visualization**
+## Visualization
 
 Let's visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
 
@@ -154,6 +158,8 @@ Now let's try to make a density-dependent version of the original Lotka-Volterra
 \frac{dP}{dt} &= caNP-mP \\
 \end{align}
 ```
+
+## System
 
 We will call this new system `LotkaVolterraDD`.
 
@@ -175,7 +181,7 @@ end
 ```
 \
 
-## **Configuration**
+## Configuration
 
 Much like the new system, the new configuration can be created by reusing the old configuration. All we need to configure is the new variable `K`.
 
@@ -184,7 +190,7 @@ lvddc = @config(lvc, (:LotkaVolterraDD => :K => 1000))
 ```
 \
 
-## **Visualization**
+## Visualization
 
 Once again, let's visualize the system using the `visualize()` function.
 
@@ -193,7 +199,7 @@ visualize(LotkaVolterraDD, :t, [:N, :P]; config = lvddc, stop = 100u"yr", kind =
 ```
 \
 
-### Calibration
+## Calibration
 
 If you want to calibrate the parameters according to a particular dataset, Cropbox provides the `calibrate()` function, which relies on [BlackBoxOptim.jl](https://github.com/robertfeldt/BlackBoxOptim.jl) for global optimization methods. If you are interested in local optimization methods, refer to [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) package for more information.
 
@@ -351,7 +357,7 @@ visualize!(p2, LotkaVolterraDD, :t, [:N, :P];
 ```
 \
 
-### Evaluation
+## Evaluation
 
 We have visualized how the simulated `LotkaVolterra` and `LotkaVolterraDD` systems compare to the the original dataset. Let us obtain a metric for how well the simulations fit the original dataset using the `evaluate()` function in Cropbox. The `evaluate()` function supports numerous different metrics for evaluation. Here, we will calculate the root-mean-square error (RMSE) and modeling efficiency (EF).
 
