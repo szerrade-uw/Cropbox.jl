@@ -13,17 +13,17 @@ makedocs(
             "Cropbox" => "index.md",
             "Installation" => "installation.md"
         ],
-        "Guide" => [
+        "Tutorials" => [
+            "Growing Degree-Day" => "tutorials/gdd.md",
+            "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md"
+        ],
+        "Manual" => [
             "System" => "guide/system.md",
             "Variable" => "guide/variable.md",
             "Configuration" => "guide/configuration.md",
             "Simulation" => "guide/simulation.md",
             "Visualization" => "guide/visualization.md",
             "Inspection" => "guide/inspection.md"
-        ],
-        "Tutorials" => [
-            "Growing Degree-Day" => "tutorials/gdd.md",
-            "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md"
         ],
         "Gallery" => "gallery.md",
         "Reference" => [
