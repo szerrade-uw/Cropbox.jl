@@ -104,7 +104,7 @@ end
 ```
 \
 
-**Configuration**
+## **Configuration**
 
 With the system now defined, we will create a `Config` object to fill or adjust the parameters.
 
@@ -131,7 +131,7 @@ lvc = @config (lvc,
 ```
 \
 
-**Visualization**
+## **Visualization**
 
 Let's visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
 
@@ -139,7 +139,7 @@ Let's visualize the `LotkaVolterra` system with the configuration that we just c
 visualize(LotkaVolterra, :t, [:N, :P]; config = lvc, stop = 100u"yr", kind = :line)
 ```
 
-### Density-Dependent Lotka-Volterra Equations
+# Density-Dependent Lotka-Volterra Equations
 
 Now let's try to make a density-dependent version of the original Lotka-Volterra model which incorporates a new term in the prey population rate. The new variable *K* represents the carrying capacity of the prey population.
 
@@ -170,7 +170,7 @@ end
 ```
 \
 
-**Configuration**
+## **Configuration**
 
 Much like the new system, the new configuration can be created by reusing the old configuration. All we need to configure is the new variable `K`.
 
@@ -179,7 +179,7 @@ lvddc = @config(lvc, (:LotkaVolterraDD => :K => 1000))
 ```
 \
 
-**Visualization**
+## **Visualization**
 
 Once again, let's visualize the system using the `visualize()` function.
 
