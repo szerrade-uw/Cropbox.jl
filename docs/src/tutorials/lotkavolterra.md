@@ -15,7 +15,6 @@ pelts = DataFrame(
 
 ```@contents
 Pages = ["lotkavolterra.md"]
-Depth = 2:4
 ```
 
 # Lotka-Volterra Equations
