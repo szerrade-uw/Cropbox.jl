@@ -15,7 +15,8 @@ makedocs(
         ],
         "Tutorials" => [
             "Growing Degree-Day" => "tutorials/gdd.md",
-            "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md"
+            "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md",
+            "Making a Model" => "tutorials/makingamodel.md"
         ],
         "Manual" => [
             "System" => "guide/system.md",
