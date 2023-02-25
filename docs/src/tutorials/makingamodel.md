@@ -45,12 +45,7 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 \end{align}
 ```
 
-In this tutorial, we will create a model that simulates GDD and cGDD.
-
-**Table of Contents**
-```@contents
-Pages = ["gdd.md"]
-```
+In this section, we will create a model that simulates GDD and cGDD.
 
 #### Making a System
 

@@ -35,6 +35,7 @@ In this tutorial, we will create a model that simulates GDD and cGDD.
 **Table of Contents**
 ```@contents
 Pages = ["gdd.md"]
+Depth = 3
 ```
 
 ## Making a System
@@ -257,7 +258,7 @@ c = @config(
 )
 ```
 
-## Simulation a System
+## Simulation
 
 Now that we have fully defined `GrowingDegreeDay` and created a configuration for it, we can finally simulate the model.
 
@@ -273,7 +274,7 @@ first(s, 10)
 ```
 \
 
-## Visualizing a System
+## Visualization
 
 To end the tutorial, let's visualize the simulation using the `plot()` and `visualize()` functions.
 
