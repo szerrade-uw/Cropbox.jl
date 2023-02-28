@@ -1,4 +1,4 @@
-# Getting Started with Cropbox
+# [Getting Started with Cropbox](@id cropbox)
 
 This tutorial will cover basic macros and functions of Cropbox.
 
