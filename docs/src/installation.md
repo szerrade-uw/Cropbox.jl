@@ -2,7 +2,9 @@
 
 ## Install Julia
 
-Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia.
+Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In most cases, you probably want to install the 64-bit version.
+
+While you can technically use the terminal or command prompt to run your code, 
 
 ## Install Cropbox
 
@@ -12,6 +14,10 @@ Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). 
 using Pkg
 Pkg.add("Cropbox")
 ```
+
+## Alternatives
+
+If you would like to skip the process of installing Julia and Cropbox on your machine. 
 
 There is a [Docker image](https://hub.docker.com/repository/docker/cropbox/cropbox) with Cropbox precompiled for convenience. By default, Jupyter Lab will be launched.
 
@@ -35,6 +41,8 @@ $ docker run -it --rm cropbox/cropbox julia
 julia>
 ```
 
-The docker image can be also launched via Binder without installing anything local.
+## Binder
+
+The docker image can be also launched via Binder without installing anything locally.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cropbox/cropbox-binder/main)

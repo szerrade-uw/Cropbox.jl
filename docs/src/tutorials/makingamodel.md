@@ -56,9 +56,11 @@ Let us start by making a system called `GrowingDegreeDay`. This can be done usin
 @system GrowingDegreeDay
 ```
 
-From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
+
 
 #### Defining Variables
+
+From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
 
 ```
 @system GrowingDegreeDay begin
@@ -129,7 +131,7 @@ end
 
 We have declared all the necessary variables for `GrowingDegreeDay`.
 
-#### Mix-Ins
+#### Mixins
 
 Now let's address the issue of the missing temperature values. We will make a new system that will provide the missing temperature data we need for simulating `GrowingDegreeDay`. We will call this system `Temperature`. The purpose of `Temperature` will be to obtain a time series of daily average temperature values from an external data source.
 
