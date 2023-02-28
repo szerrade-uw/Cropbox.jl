@@ -32,6 +32,7 @@ This tutorial will cover the topic of creating a Cropbox model.
 
 ```@contents
 Pages = ["makingamodel.md"]
+Depth = 3
 ```
 
 ## [Growing Degree-Day](@id GDD)
