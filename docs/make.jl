@@ -14,9 +14,12 @@ makedocs(
             "Installation" => "installation.md"
         ],
         "Tutorials" => [
+            "Getting started with Julia" => "tutorials/julia.md",
+            "Getting started with Cropbox" => "tutorials/cropbox.md",
+            "Making a model" => "tutorials/makingamodel.md",
+            "Using an existing model" => "tutorials/usingamodel.md",
             "Growing Degree-Day" => "tutorials/gdd.md",
             "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md",
-            "Making a Model" => "tutorials/makingamodel.md"
         ],
         "Manual" => [
             "System" => "guide/system.md",
@@ -24,7 +27,7 @@ makedocs(
             "Configuration" => "guide/configuration.md",
             "Simulation" => "guide/simulation.md",
             "Visualization" => "guide/visualization.md",
-            "Inspection" => "guide/inspection.md"
+            "Inspection" => "guide/inspection.md",
         ],
         "Gallery" => "gallery.md",
         "Reference" => [
