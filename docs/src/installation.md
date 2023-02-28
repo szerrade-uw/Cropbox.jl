@@ -2,7 +2,7 @@
 
 ## Install Julia
 
-Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In most cases, you probably want to install the 64-bit version.
+Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In general, you will want to install the 64-bit version. If you run into an issue, you can try the 32-bit version.
 
 While you can technically use the terminal or command prompt to run your code, 
 
