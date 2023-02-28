@@ -18,8 +18,6 @@ makedocs(
             "Getting started with Cropbox" => "tutorials/cropbox.md",
             "Making a model" => "tutorials/makingamodel.md",
             "Using an existing model" => "tutorials/usingamodel.md",
-            "Growing Degree-Day" => "tutorials/gdd.md",
-            "Lotka-Volterra Equations" => "tutorials/lotkavolterra.md",
         ],
         "Manual" => [
             "System" => "guide/system.md",
