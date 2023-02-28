@@ -28,10 +28,11 @@ pelts = DataFrame(
 
 # Making a Model
 
-This tutorial will teach you how to create you own Cropbox model from scratch.
+This tutorial will cover the topic of creating a Cropbox model.
 
 ```@contents
 Pages = ["makingamodel.md"]
+Depth = 5
 ```
 
 ## [Growing Degree-Day](@id GDD)
