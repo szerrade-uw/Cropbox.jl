@@ -20,15 +20,15 @@ makedocs(
             "Using an existing model" => "tutorials/usingamodel.md",
         ],
         "Manual" => map(
-            file -> "guide/$(file)", [
+            file -> "$file", [
                 "System" => "guide/system.md",
                 "Variable" => "guide/variable.md",
                 "Configuration" => "guide/configuration.md",
                 "Simulation" => "guide/simulation.md",
                 "Visualization" => "guide/visualization.md",
                 "Inspection" => "guide/inspection.md",
-                ]
-            ),
+            ]
+        ),
         "Gallery" => "gallery.md",
         "Reference" => [
             "Index" => "reference/index.md",
