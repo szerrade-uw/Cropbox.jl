@@ -32,7 +32,6 @@ This tutorial will cover the topic of creating a Cropbox model.
 
 ```@contents
 Pages = ["makingamodel.md"]
-Depth = 5
 ```
 
 ## [Growing Degree-Day](@id GDD)
@@ -48,7 +47,7 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 
 In this section, we will create a model that simulates GDD and cGDD.
 
-#### Making a System
+### Making a System
 
 Let us start by making a system called `GrowingDegreeDay`. This can be done using a simple Cropbox macro `@system`. 
 
@@ -58,7 +57,7 @@ Let us start by making a system called `GrowingDegreeDay`. This can be done usin
 
 From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
 
-##### Defining Variables
+#### Defining Variables
 
 ```
 @system GrowingDegreeDay begin
@@ -129,7 +128,7 @@ end
 
 We have declared all the necessary variables for `GrowingDegreeDay`.
 
-##### Creating Mix-Ins
+#### Mix-Ins
 
 Now let's address the issue of the missing temperature values. We will make a new system that will provide the missing temperature data we need for simulating `GrowingDegreeDay`. We will call this system `Temperature`. The purpose of `Temperature` will be to obtain a time series of daily average temperature values from an external data source.
 
@@ -204,7 +203,7 @@ end
 ```
 \
 
-#### Configuring a System
+### Configuration
 
 The next step is to create a configuration object to assign the values of parameters. Recall that `data`, `T`, `Tb`, and `To` are empty variables at the moment.
 
@@ -268,7 +267,7 @@ c = @config(
 )
 ```
 
-#### Simulating a System
+### Simulation
 
 Now that we have fully defined `GrowingDegreeDay` and created a configuration for it, we can finally simulate the model.
 
@@ -284,7 +283,7 @@ first(s, 10)
 ```
 \
 
-#### Visualizing a System
+### Visualization
 
 To end the tutorial, let's visualize the simulation using the `plot()` and `visualize()` functions.
 
@@ -331,7 +330,7 @@ Here is a list of variables used in the system:
 \
 
 
-#### System
+### System
 
 Let's begin by creating a [system](@ref System) called `LotkaVolterra`. Since this is a system that we want to simulate later on, we must include [`Controller`](@ref Controller) as a [mixin](@ref Mixin).
 
@@ -400,7 +399,7 @@ end
 ```
 \
 
-#### Configuration
+### Configuration
 
 With the system now defined, we will create a `Config` object to fill or adjust the parameters.
 
@@ -427,7 +426,7 @@ lvc = @config (lvc,
 ```
 \
 
-#### Visualization
+### Visualization
 
 Let's visualize the `LotkaVolterra` system with the configuration that we just created, using the `visualize()` function. The `visualize()` function both runs a simulation and plots the resulting DataFrame.
 
@@ -435,7 +434,7 @@ Let's visualize the `LotkaVolterra` system with the configuration that we just c
 visualize(LotkaVolterra, :t, [:N, :P]; config = lvc, stop = 100u"yr", kind = :line)
 ```
 
-### Density-Dependent Lotka-Volterra Equations
+## Density-Dependent Lotka-Volterra Equations
 
 Now let's try to make a density-dependent version of the original Lotka-Volterra model which incorporates a new term in the prey population rate. The new variable *K* represents the carrying capacity of the prey population.
 
@@ -446,7 +445,7 @@ Now let's try to make a density-dependent version of the original Lotka-Volterra
 \end{align}
 ```
 
-#### System
+### System
 
 We will call this new system `LotkaVolterraDD`.
 
@@ -468,7 +467,7 @@ end
 ```
 \
 
-#### Configuration
+### Configuration
 
 Much like the new system, the new configuration can be created by reusing the old configuration. All we need to configure is the new variable `K`.
 
@@ -477,7 +476,7 @@ lvddc = @config(lvc, (:LotkaVolterraDD => :K => 1000))
 ```
 \
 
-#### Visualization
+### Visualization
 
 Once again, let's visualize the system using the `visualize()` function.
 
@@ -486,7 +485,7 @@ visualize(LotkaVolterraDD, :t, [:N, :P]; config = lvddc, stop = 100u"yr", kind =
 ```
 \
 
-#### Calibration
+### Calibration
 
 If you want to calibrate the parameters according to a particular dataset, Cropbox provides the `calibrate()` function, which relies on [BlackBoxOptim.jl](https://github.com/robertfeldt/BlackBoxOptim.jl) for global optimization methods. If you are interested in local optimization methods, refer to [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) package for more information.
 
@@ -644,7 +643,7 @@ visualize!(p2, LotkaVolterraDD, :t, [:N, :P];
 ```
 \
 
-#### Evaluation
+### Evaluation
 
 We have visualized how the simulated `LotkaVolterra` and `LotkaVolterraDD` systems compare to the the original dataset. Let us obtain a metric for how well the simulations fit the original dataset using the `evaluate()` function in Cropbox. The `evaluate()` function supports numerous different metrics for evaluation. Here, we will calculate the root-mean-square error (RMSE) and modeling efficiency (EF).
 
