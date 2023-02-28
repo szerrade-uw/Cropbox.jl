@@ -15,9 +15,9 @@ using Pkg
 Pkg.add("Cropbox")
 ```
 
-## Alternatives
+## Docker
 
-If you would like to skip the process of installing Julia and Cropbox on your machine. 
+If you would like to skip the process of installing Julia and Cropbox on your machine...
 
 There is a [Docker image](https://hub.docker.com/repository/docker/cropbox/cropbox) with Cropbox precompiled for convenience. By default, Jupyter Lab will be launched.
 
