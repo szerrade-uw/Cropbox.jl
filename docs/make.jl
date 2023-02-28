@@ -19,14 +19,16 @@ makedocs(
             "Making a model" => "tutorials/makingamodel.md",
             "Using an existing model" => "tutorials/usingamodel.md",
         ],
-        "Manual" => [
-            "System" => "guide/system.md",
-            "Variable" => "guide/variable.md",
-            "Configuration" => "guide/configuration.md",
-            "Simulation" => "guide/simulation.md",
-            "Visualization" => "guide/visualization.md",
-            "Inspection" => "guide/inspection.md",
-        ],
+        "Manual" => map(
+            file -> "guide/$(file)", [
+                "System" => "guide/system.md",
+                "Variable" => "guide/variable.md",
+                "Configuration" => "guide/configuration.md",
+                "Simulation" => "guide/simulation.md",
+                "Visualization" => "guide/visualization.md",
+                "Inspection" => "guide/inspection.md",
+                ]
+            ),
         "Gallery" => "gallery.md",
         "Reference" => [
             "Index" => "reference/index.md",
