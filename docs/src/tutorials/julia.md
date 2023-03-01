@@ -44,8 +44,8 @@ c = [a, b]
 d = @system D
 ```
 
-!!! note "Note"
-    Keep in mind that Julia variables are not to be confused with Cropbox [variables](@ref variable) defined within Cropbox [systems](@id system).
+!!! warning "Warning"
+    Julia variables are not to be confused with Cropbox [variables](@ref variable) defined within Cropbox [systems](@id system).
 
 ## Types
 

@@ -15,3 +15,5 @@ using Pkg
 Pkg.add("SimpleCrop")
 ```
 
+## Inspecting the Model
+
