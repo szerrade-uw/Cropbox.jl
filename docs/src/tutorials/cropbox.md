@@ -40,15 +40,66 @@ A system can be made by using a simple Cropbox macro, `@system`.
 We have just created a system called `S`. In its current state, `S` is an empty system with no variables. Our next step is to define the variables that will represent our system.
 
 ### Defining Variables
+Suppose we want the system to represent exponential described by this differential equation with an initial value of x=1
 
-In Cropbox, 
+$\frac{dx}{dt} = ax$
 
+In Cropbox, we could define the system with the following:
+```
+@system S(Controller) begin
+    i       => 1   ~ preserve
+    a       => 0.1 ~ preserve(parameter)
+    r(a, x) => a*x ~ track
+    x(r)           ~ accumulate(init = i)
+end
+```
+Here we declared four variables.
+
+- i: variable containing initial value of x which never changes (preserved)
+- a: variable containing constant parameter of exponential growth
+- r: rate variable which needs to be calculated or tracked every time step
+- x: state variable which accumulates by rate r over time with initial value i
+
+Each variable has been declared with a state, such as preserve or track, that describes its behavior when the system is instantiated. In Cropbox, there are 19 different variable states, which are described in more detail in the [Variable section of the Manual](https://junhyukjeon.github.io/Cropbox.jl/dev/guide/variable/). 
 
 ## Configuring Parameters
+In modeling, we often need to change the value of a parameter for different systems or species. We can change the value of variables declared with the paramater tag before running the model by creating a config with the new value. For example, we could change the value of parameter a in system S to be .05 and then create an instance of S with this new value.  
 
+```
+config = @config(:S => :a => .05)
+instance(S; config)
+```
+Multiple parameters can be specified using tuples or named tuples. 
+#### Tuple of Pairs
+```
+@config :S => (:a => 1, :b => 2)
+```
+#### Named Tuples 
+```
+@config :S => (a = 1, b = 2)
+```
 ## Simulation
+Before you can run a simulation, you need to instantiate it using the instance() function. 
+```
+s = instance(S; config)
+```
+The simulate function will create an instance of the system for us and update the values of all the variables in it at each time step. By default, simulations in Cropbox use a time step of one hour. 
+
+Let's use Cropbox to simulate the system for ten time steps.
+```
+df = simulate(S, config = config, stop = 10);
+```
+This will output the values of the variables as a DataFrame where each row represents one time step. 
 
 ## Visualization
+Once we have simulated the system, we may want to visualize the resulting data by creating a scatterplot. This can be done by using the plot() function. We specify the name of the dataframe as the first argument, then the variables we want to plot on the x and y axes. 
+```
+p = plot(df, :time, :x)
+```
+The visualize() function can also be used to run a simulation and plot the results using one command. 
+```
+v = visualize(S, :time, :x ; stop=10, kind=:line)
+```
 
 ## Evaluation
 
