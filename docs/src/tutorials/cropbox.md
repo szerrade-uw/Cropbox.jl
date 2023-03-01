@@ -60,7 +60,7 @@ Here we declared four variables.
 - r: rate variable which needs to be calculated or tracked every time step
 - x: state variable which accumulates by rate r over time with initial value i
 
-Each variable has been declared with a state, such as preserve or track, that describes its behavior when the system is instantiated. In Cropbox, there are 19 different variable states, which are described in more detail in the [Variable section of the Manual](@ref Variable). 
+Each variable has been declared with a state, such as preserve or track, that describes its behavior when the system is instantiated. In Cropbox, there are 19 different variable states, which are described in more detail in the [Variable section of the Manual](@ref variable). 
 
 ## Configuring Parameters
 In modeling, we often need to change the value of a parameter for different systems or species. We can change the value of variables declared with the paramater tag before running the model by creating a config with the new value. For example, we could change the value of parameter a in system S to be .05 and then create an instance of S with this new value.  
