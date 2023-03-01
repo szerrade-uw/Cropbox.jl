@@ -32,7 +32,7 @@ This tutorial will cover the topic of creating a Cropbox model.
 
 ```@contents
 Pages = ["makingamodel.md"]
-Depth = 3
+Depth = 4
 ```
 
 ## [Growing Degree-Day](@id GDD)
@@ -48,7 +48,7 @@ You might have heard the terms like growing degree days (GDD), thermal units, he
 
 In this section, we will create a model that simulates GDD and cGDD.
 
-### Making a System
+### System
 
 Let us start by making a system called `GrowingDegreeDay`. This can be done using a simple Cropbox macro `@system`. 
 
@@ -56,9 +56,7 @@ Let us start by making a system called `GrowingDegreeDay`. This can be done usin
 @system GrowingDegreeDay
 ```
 
-
-
-#### Defining Variables
+#### Variables
 
 From the equation, let's identify the variables we need to declare in our system. In the equation for GDD, we have two parameters *Topt* and *Tb*. Since they are fixed values, we will declare them as `preserve` variables, which are variables that remain constant throughout a simulation.
 
@@ -492,7 +490,7 @@ visualize(LotkaVolterraDD, :t, [:N, :P]; config = lvddc, stop = 100u"yr", kind =
 
 If you want to calibrate the parameters according to a particular dataset, Cropbox provides the `calibrate()` function, which relies on [BlackBoxOptim.jl](https://github.com/robertfeldt/BlackBoxOptim.jl) for global optimization methods. If you are interested in local optimization methods, refer to [Optim.jl](https://github.com/JuliaNLSolvers/Optim.jl) package for more information.
 
-For this tutorial, we will use a dataset containing the number of pelts (in thousands) of Canadian lynx and snowshoe hare traded by the Hudson Bay Trading Company in Canada from 1845 to 1935.
+For this tutorial, we will use a dataset containing the number of pelts (in thousands) of Canadian lynx and snowshoe hare traded by the Hudson Bay Trading Company in Canada from 1845 to 1935. This data is available [here]()
 
 ```@example Cropbox
 first(pelts, 3)

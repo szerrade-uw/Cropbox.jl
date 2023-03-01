@@ -1,8 +1,10 @@
 # [Installation](@id Installation)
 
-## Install Julia
+## Installing Julia
 
-Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In general, you will want to install the 64-bit version. If you run into an issue, you can try the 32-bit version. During installation, select "Add Julia to PATH". You can also add Julia to PATH after installation using the terminal.
+Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In general, you will want to install the 64-bit version. If you run into an issue installing the 64-bit version, you can try the 32-bit version. During installation, select "Add Julia to PATH". You can also add Julia to PATH after installation using the terminal.
+
+For more detailed platform-specific instructions, you can check the [official Julia instructions](https://julialang.org/downloads/platform/).
 
 ```shell
 export PATH="$PATH:/path/to/<Julia directory>/bin"
@@ -19,7 +21,7 @@ Pkg.add("IJulia")
 ```
 When you launch Jupyter, you should now be able to select a Julia kernel to run your notebook. 
 
-## Install Cropbox
+## Installing Cropbox
 
 [Cropbox.jl](https://github.com/cropbox/Cropbox.jl) is available through Julia package manager and can be installed using the Julia REPL.
 
@@ -28,7 +30,7 @@ using Pkg
 Pkg.add("Cropbox")
 ```
 
-## Docker
+## Using Docker
 
 If you would like to skip the process of installing Julia and Cropbox on your machine, there is a [Docker image](https://hub.docker.com/repository/docker/cropbox/cropbox) with Cropbox precompiled for convenience. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) on your machine by following the instructions on the website and run the following command in the terminal or command prompt. 
 
@@ -53,8 +55,8 @@ docker run -it --rm cropbox/cropbox julia
 julia>
 ```
 
-## Binder
+## Using Binder
 
-The docker image can be also launched via Binder without installing anything locally.
+The docker image can be also launched via Binder without installing anything locally. This method is the least recommended due to its timeout duration.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cropbox/cropbox-binder/main)
