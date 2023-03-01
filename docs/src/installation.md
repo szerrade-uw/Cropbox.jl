@@ -4,11 +4,11 @@
 
 Cropbox is a domain-specific language (DSL) for [Julia](https://julialang.org). To use Cropbox, you must first [download and install](https://julialang.org/downloads/) Julia. For new users, it is recommended to install the "Current stable release" for Julia. In general, you will want to install the 64-bit version. If you run into an issue installing the 64-bit version, you can try the 32-bit version. During installation, select "Add Julia to PATH". You can also add Julia to PATH after installation using the terminal.
 
-For more detailed platform-specific instructions, you can check the [official Julia instructions](https://julialang.org/downloads/platform/).
-
 ```shell
 export PATH="$PATH:/path/to/<Julia directory>/bin"
 ``` 
+
+For more detailed platform-specific instructions, you can check the [official Julia instructions](https://julialang.org/downloads/platform/).
 
 Once Julia is added to PATH, the interactive REPL can be started by double-clicking the Julia executable or running `julia` from the command line. 
 
