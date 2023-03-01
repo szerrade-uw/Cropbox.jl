@@ -23,7 +23,7 @@ If you are using a prebuilt docker image with Cropbox included, you can skip thi
 
 When using Cropbox, make sure to load the package into the environment by using the following command:
 
-```
+```@example Cropbox
 using Cropbox
 ```
 
@@ -33,7 +33,7 @@ In Cropbox, a model is defined by a single system or a collection of systems.
 
 A system can be made by using a simple Cropbox macro, `@system`.
 
-```
+```@example Cropbox
 @system S
 ```
 
@@ -45,7 +45,7 @@ Suppose we want the system to represent exponential described by this differenti
 $\frac{dx}{dt} = ax$
 
 In Cropbox, we could define the system with the following:
-```
+```@example Cropbox
 @system S(Controller) begin
     i       => 1   ~ preserve
     a       => 0.1 ~ preserve(parameter)
@@ -65,7 +65,7 @@ Each variable has been declared with a state, such as preserve or track, that de
 ## Configuring Parameters
 In modeling, we often need to change the value of a parameter for different systems or species. We can change the value of variables declared with the paramater tag before running the model by creating a config with the new value. For example, we could change the value of parameter a in system S to be .05 and then create an instance of S with this new value.  
 
-```
+```@example Cropbox
 config = @config(:S => :a => .05)
 instance(S; config)
 ```
