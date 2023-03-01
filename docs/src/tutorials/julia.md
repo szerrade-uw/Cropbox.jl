@@ -34,7 +34,7 @@ c = a + b
 
 Variables in Julia refer to names that are associated with a value. The names can be associated with various different [types](@ref types) of values. Take a look at the following example:
 
-```@example Cropbox
+```@repl Cropbox
 a = 1
 
 b = "string"
